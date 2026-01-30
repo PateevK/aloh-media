@@ -1,0 +1,110 @@
+[
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Engine\\Engine.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Engine\\Engine.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Engine\\Engine.cpp",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Engine\\Engine.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Engine\\device_m.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Engine\\device_m.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Engine\\device_m.cpp",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Engine\\device_m.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Node\\node.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Node\\node.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Node\\node.cpp",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Node\\node.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Pipeline\\Pipeline.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Pipeline\\Pipeline.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Pipeline\\Pipeline.cpp",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Pipeline\\Pipeline.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Utils\\AudioTypes.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Utils\\AudioTypes.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Utils\\AudioTypes.cpp",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Utils\\AudioTypes.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Utils\\context.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Utils\\context.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Utils\\context.cpp",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Utils\\context.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Utils\\ring_buffer.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Utils\\ring_buffer.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\Utils\\ring_buffer.cpp",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\Utils\\ring_buffer.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\device\\sink.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\device\\sink.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\device\\sink.cpp",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\device\\sink.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\device\\src.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\device\\src.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\audio\\device\\src.cpp",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\src\\audio\\device\\src.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o CMakeFiles\\ALOH_MEDIA.dir\\src\\main.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\main.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\src\\main.cpp",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\src\\main.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang.exe -DFUNC_SIG=__PRETTY_FUNCTION__ -DSPDLOG_COMPILED_LIB -ID:/projects/skwiflex/ALOH_MEDIA/src -ID:/projects/skwiflex/ALOH_MEDIA/third_party/miniaudio -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -o CMakeFiles\\ALOH_MEDIA.dir\\third_party\\miniaudio\\miniaudio.c.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\miniaudio\\miniaudio.c",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\miniaudio\\miniaudio.c",
+  "output": "CMakeFiles\\ALOH_MEDIA.dir\\third_party\\miniaudio\\miniaudio.c.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\spdlog.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\spdlog.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\spdlog.cpp",
+  "output": "third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\spdlog.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\stdout_sinks.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\stdout_sinks.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\stdout_sinks.cpp",
+  "output": "third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\stdout_sinks.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\color_sinks.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\color_sinks.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\color_sinks.cpp",
+  "output": "third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\color_sinks.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\file_sinks.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\file_sinks.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\file_sinks.cpp",
+  "output": "third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\file_sinks.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\async.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\async.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\async.cpp",
+  "output": "third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\async.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\cfg.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\cfg.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\cfg.cpp",
+  "output": "third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\cfg.cpp.obj"
+},
+{
+  "directory": "D:/projects/skwiflex/ALOH_MEDIA/build",
+  "command": "d:\\someProgs\\msys2\\clang64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -ID:/projects/skwiflex/ALOH_MEDIA/third_party/spdlog/include -g -std=c++23 -o third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\bundled_fmtlib_format.cpp.obj -c D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\bundled_fmtlib_format.cpp",
+  "file": "D:\\projects\\skwiflex\\ALOH_MEDIA\\third_party\\spdlog\\src\\bundled_fmtlib_format.cpp",
+  "output": "third_party\\spdlog\\CMakeFiles\\spdlog.dir\\src\\bundled_fmtlib_format.cpp.obj"
+}
+]
