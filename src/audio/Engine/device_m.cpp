@@ -32,12 +32,17 @@ namespace  alo::audio {
         }
 
         for (ma_uint32 iDevice = 0; iDevice < playbackCount; iDevice += 1) {
-            std::println("{} - {} - {}", iDevice, pPlaybackInfos[iDevice].name, pPlaybackInfos[iDevice].isDefault);
-            
+            auto info = device::info::make();
+            *info->get() = pPlaybackInfos[iDevice];
+
+            _sink.emplace_back(std::move(info));
         }
 
         for (ma_uint32 iDevice = 0; iDevice < captureCount; iDevice += 1) {
-            std::println("{} - {} - {}", iDevice, pCaptureInfos[iDevice].name, pPlaybackInfos[iDevice].isDefault);
+            auto info = device::info::make();
+            *info->get() = pCaptureInfos[iDevice];
+
+            _src.emplace_back(std::move(info));
         }
 
     }

@@ -26,10 +26,18 @@ void ContextDeleter::operator()(ma_context_wrapper* con) const noexcept{
         ma_context_uninit(con->get());
         delete con;
     }
+}
+
+void DeviceInfoDeleter::operator()(ma_device_info_wrapper* info) const noexcept {
+    delete info;  // no uninit needed, it's just plain data
 } 
 
 auto device::make() noexcept -> device_ptr {
     return device_ptr{ new (std::nothrow) ma_device_wrapper{} };
+}
+
+auto device::info::make() noexcept -> device_info_ptr {
+    return device_info_ptr{ new (std::nothrow) ma_device_info_wrapper{} };
 }
 
 

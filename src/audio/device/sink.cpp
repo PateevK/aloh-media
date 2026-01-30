@@ -6,6 +6,7 @@
 #include "miniaudio.h"
 
 #include <optional>
+#include <print>
 
 namespace alo{
 
@@ -13,9 +14,11 @@ namespace audio{
     // ============ Device<DeviceType::SINK> (Playback) ============
 
     template<>
-    Device<DeviceType::SINK>::Device(){
-        _device = device::make();
-    }
+    Device<DeviceType::SINK>::Device(device_info_ptr info) 
+        : _device(device::make()), _info(std::move(info)) {
+    
+            std::println("constructred sink");
+        }
 
     template<>
     Device<DeviceType::SINK>::~Device(){

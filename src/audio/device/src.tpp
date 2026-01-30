@@ -1,16 +1,17 @@
 #pragma once
 
-#include "device.hpp"
+#include "Device.hpp"
 
 #include <optional>
 
 namespace alo{
 
 namespace audio{
-    // ============ Device<DeviceType::SRC> (Playback) ============
+    // ============ Device<DeviceType::SRC> (Capture) ============
+
 
     template<>
-    Device<DeviceType::SRC>::Device();
+    Device<DeviceType::SRC>::Device(device_info_ptr info);
 
     template<>
     Device<DeviceType::SRC>::~Device();

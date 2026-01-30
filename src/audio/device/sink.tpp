@@ -1,6 +1,6 @@
 #pragma once
 
-#include "device.hpp"
+#include "Device.hpp"
 
 #include <optional>
 
@@ -10,7 +10,7 @@ namespace audio{
     // ============ Device<DeviceType::SINK> (Playback) ============
 
     template<>
-    Device<DeviceType::SINK>::Device();
+    Device<DeviceType::SINK>::Device(device_info_ptr info);
 
     template<>
     Device<DeviceType::SINK>::~Device();
