@@ -9,7 +9,6 @@
 #include <spdlog/spdlog.h>
 
 #include <type_traits>
-#include <unordered_map>
 
 template<auto> 
 struct always_false : std::false_type {};

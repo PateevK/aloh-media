@@ -39,11 +39,10 @@ public:
     device_id_t id() const;
     void id(device_id_t id);
     
-    std::optional<err_t> init(); 
+    std::optional<err_t> init(const context_ptr& con); 
     std::optional<err_t> start();
     std::optional<err_t> stop();
 
-    
     private:
     device_id_t _id{};
     device_ptr _device = nullptr;

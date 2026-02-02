@@ -23,7 +23,7 @@ namespace audio{
     void Device<DeviceType::SRC>::_data_callback_c(ma_device* pDevice, void* pOutput, const void* pInput, uint32_t frameCount);
 
     template<>  
-    std::optional<err_t> Device<DeviceType::SRC>::init();
+    std::optional<err_t> Device<DeviceType::SRC>::init(const context_ptr& con);
 
     template<>
     std::optional<err_t> Device<DeviceType::SRC>::start();

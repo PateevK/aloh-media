@@ -1,13 +1,50 @@
 #pragma once
 
-namespace alo{
+#include <concepts>
+#include <memory>
+#include <utility>
 
-namespace audio{
+namespace alo::audio{
+
+template <typename T>
+concept NodeConcept = requires (T node) {
+{node.connect()} -> std::same_as<void>;
+};  
+
+class Node{
+
+    struct NodeI {
     
-    class Node{
-        
+        virtual ~NodeI() = default;
+    
+        virtual void connect() const = 0;
+    
     };
 
-} // audio
+    template< NodeConcept NodeT >
+    class NodeModel : public NodeI {
+    public:
+        NodeModel(NodeT node)
+        : _node( std::move(node)) {}
 
-} // alo
+        void connect() const override {
+            _node.connect();
+        }
+
+    private:
+        NodeT _node;
+    };
+
+    std::unique_ptr<NodeI> pimpl = nullptr;
+public:
+
+    template<NodeConcept NodeT>
+    Node(NodeT node) 
+    : pimpl(std::make_unique<NodeModel<NodeT>>(std::move(node))){}
+
+    void connect() { 
+        pimpl->connect();
+    }
+};
+
+} // alo::audio

@@ -1,44 +1,31 @@
+#include "audio/Pipeline/Pipeline.hpp"
 #include "miniaudio.h"
 #include "spdlog/spdlog.h"
 
-#include <print>
 #include <stdio.h>
 #include <audio/Engine/Engine.hpp>
 #include <audio/device/device.hpp>
-#include "audio/Utils/ring_buffer.hpp"
+#include <audio/node/sink_node.hpp>
 
 int main(int argc, char** argv){
+    using namespace alo::audio;
+
     spdlog::set_level(spdlog::level::info);
 
-    auto res = alo::audio::utils::RingBuffer<alo::audio::utils::RingBufferType::PCM>::make(2, 2);
-    if(!res){
-        return 0;
-    }  
-
-    const auto& rb = res.value();
-
-
-    alo::audio::Engine engine;
+    Engine engine;
     engine.init();
     engine.start();
 
-    const auto& ids = engine.device_m().ids<alo::audio::DeviceType::SRC>();
+    const auto& src_ids = engine.device_m().ids<DeviceType::SRC>();
+    const auto& src_device = engine.device_m().device<DeviceType::SRC>(src_ids[0]);
 
-    const auto& device = engine.device_m().device<alo::audio::DeviceType::SRC>(ids[0]);
+    const auto& sink_ids = engine.device_m().ids<DeviceType::SRC>();
+    const auto& sink_device = engine.device_m().device<DeviceType::SRC>(sink_ids[0]);
 
-    device->do_shit();
+    Pipeline pipeline{};
 
+    pipeline.effect(SinkNode{});
 
-    //auto src_id = engine.srcId();
-    //auto sink_id = engine.sinkId();
-    //const auto& src_device = engine.device(src_id);
-    //const auto& sink_device = engine.device(sink_id);
-//
-    //auto* src = new alo::audio::node<alo::audio::NodeType::src>(src_device);
-    //auto* sink = new alo::audio::node<alo::audio::NodeType::sink>(sink_device);
-    //auto* reverb = new alo::audio::node<alo::audio::NodeType::reverb>(sink_device);
-//
-    //auto* pipeline = new alo::audio::Pipeline;
 //
     //pipeline->src(src);
     //pipeline->src(sink);

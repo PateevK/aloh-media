@@ -5,9 +5,6 @@
 
 #include "miniaudio.h"
 
-#include <optional>
-#include <print>
-
 namespace alo{
 
 namespace audio{
@@ -34,49 +31,6 @@ namespace audio{
         if(self && self->_data_cb){
             self->_data_cb(self, pOutput, pInput, frameCount);
         }
-    }
-
-    template<>  
-    std::optional<err_t> Device<DeviceType::SRC>::init(){
-        auto conf = ma_device_config_init(ma_device_type_playback);
-
-        conf.playback.pDeviceID = NULL;
-        conf.playback.format    = ma_format_f32;
-        conf.playback.channels  = 2;
-            
-        conf.dataCallback = _data_callback_c;
-        conf.pUserData    = this;
-        
-        auto result = ma_device_init(NULL, &conf, _device->get());
-
-        if(result != MA_SUCCESS){
-            return result;
-        }
-
-        return std::nullopt;
-    }
-
-    template<>
-    std::optional<err_t> Device<DeviceType::SRC>::start(){
-        auto result = ma_device_start(_device->get());
-        
-        if(result != MA_SUCCESS){
-            _device.reset();
-            return result;
-        }
-
-        return std::nullopt;
-    }
-
-    template<>
-    std::optional<err_t> Device<DeviceType::SRC>::stop(){
-        auto result = ma_device_stop(_device->get());
-        if(result != MA_SUCCESS){
-            _device.reset();
-            return result;
-        }
-
-        return std::nullopt;
     }
 
 } // audio
