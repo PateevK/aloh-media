@@ -1,4 +1,6 @@
 #include "Engine.hpp"
+#include "audio/device/device.hpp"
+#include "device_m.hpp"
 
 #include <miniaudio.h>
 #include <spdlog/spdlog.h>
@@ -12,6 +14,7 @@ namespace audio{
         }
 
         void Engine::start(){
+
         }
 
         void Engine::stop(){
@@ -22,7 +25,7 @@ namespace audio{
                 _device_m.uninit();
         }
 
-        const auto& Engine::device_m() const{
+        auto Engine::device_m() const -> const DeviceM& {
                 return _device_m;
         }
 

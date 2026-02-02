@@ -1,8 +1,10 @@
 #include "miniaudio.h"
 #include "spdlog/spdlog.h"
 
+#include <print>
 #include <stdio.h>
 #include <audio/Engine/Engine.hpp>
+#include <audio/device/device.hpp>
 #include "audio/Utils/ring_buffer.hpp"
 
 int main(int argc, char** argv){
@@ -19,6 +21,14 @@ int main(int argc, char** argv){
     alo::audio::Engine engine;
     engine.init();
     engine.start();
+
+    const auto& ids = engine.device_m().ids<alo::audio::DeviceType::SRC>();
+
+    const auto& device = engine.device_m().device<alo::audio::DeviceType::SRC>(ids[0]);
+
+    device->do_shit();
+
+
     //auto src_id = engine.srcId();
     //auto sink_id = engine.sinkId();
     //const auto& src_device = engine.device(src_id);

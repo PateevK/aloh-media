@@ -4,6 +4,7 @@
 
 #include <optional>
 #include <string>
+#include <print>
 
 // forward
 struct ma_device;
@@ -20,7 +21,7 @@ public:
     // Type-safe callback signature
     using device_cb_t = std::function<void(Device<Type>* device, void* pOutput, const void* pInput, uint32_t frameCount)>;
 
-    Device(device_info_ptr info);
+    Device(device_info_ptr info, device_id_t id);
     Device(Device&&) = default;
     Device& operator=(Device&&) = default;
     
@@ -30,12 +31,21 @@ public:
     ~Device();
 
     void cb(device_cb_t cb);
+
+    void do_shit() const {
+        std::println("some shit");
+    }
+
+    device_id_t id() const;
+    void id(device_id_t id);
     
     std::optional<err_t> init(); 
     std::optional<err_t> start();
     std::optional<err_t> stop();
 
-private:
+    
+    private:
+    device_id_t _id{};
     device_ptr _device = nullptr;
     device_cb_t _data_cb;
     device_info_ptr _info{};

@@ -17,12 +17,11 @@ namespace alo::audio{
         void start();
         void stop();
         void uninit(); 
-        const auto& device_m() const; 
+        auto device_m() const -> const DeviceM&;
     
         private:
 
         DeviceM _device_m{};
-
     };
 
 } // alo::audio

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Device.hpp"
+#include "device.hpp"
 
 #include <optional>
 
@@ -11,7 +11,7 @@ namespace audio{
 
 
     template<>
-    Device<DeviceType::SRC>::Device(device_info_ptr info);
+    Device<DeviceType::SRC>::Device(device_info_ptr info,  device_id_t id);
 
     template<>
     Device<DeviceType::SRC>::~Device();

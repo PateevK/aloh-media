@@ -1,9 +1,11 @@
+#include "audio/device/device.hpp"
 #include "device.hpp"
 
 #include "audio/Utils/AudioTypes.hpp"
 #include "audio/Utils/AudioTypesImpl.hpp"
 
 #include "miniaudio.h"
+#include "spdlog/spdlog.h"
 
 #include <optional>
 #include <print>
@@ -14,10 +16,8 @@ namespace audio{
     // ============ Device<DeviceType::SINK> (Playback) ============
 
     template<>
-    Device<DeviceType::SINK>::Device(device_info_ptr info) 
-        : _device(device::make()), _info(std::move(info)) {
-    
-            std::println("constructred sink");
+    Device<DeviceType::SINK>::Device(device_info_ptr info, device_id_t id) 
+        : _device(device::make()), _info(std::move(info)), _id(std::move(id)){
         }
 
     template<>
@@ -41,6 +41,12 @@ namespace audio{
     template<>  
     std::optional<err_t> Device<DeviceType::SINK>::init(){
         auto conf = ma_device_config_init(ma_device_type_playback);
+
+
+        if( !_info ){
+            spdlog::error("Device<SINK>::init : _info is NULL");
+            return 1;
+        }
 
         conf.playback.pDeviceID = NULL;
         conf.playback.format    = ma_format_f32;
