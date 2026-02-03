@@ -25,7 +25,7 @@ class DeviceM{
     std::vector<device_id_t> ids() const;
 
     template<DeviceType type>
-    const device_handle_t<type>* device(const device_id_t& id) const;
+    const device_handle_t<type>* get(const device_id_t& id) const;
 
     private:
 

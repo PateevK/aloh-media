@@ -47,7 +47,7 @@ namespace  alo::audio {
 
     // Be carefull )
     template<DeviceType type>
-    const device_handle_t<type>* DeviceM::device(const device_id_t& id) const{
+    const device_handle_t<type>* DeviceM::get(const device_id_t& id) const{
 
         if constexpr (type == DeviceType::SINK){
             auto it = _sink.find(id);
@@ -102,8 +102,8 @@ namespace  alo::audio {
     }
 
         // Explicit template instantiations
-    template const device_handle_t<DeviceType::SINK>* DeviceM::device<DeviceType::SINK>(const device_id_t&) const;
-    template const device_handle_t<DeviceType::SRC>* DeviceM::device<DeviceType::SRC>(const device_id_t&) const;
+    template const device_handle_t<DeviceType::SINK>* DeviceM::get<DeviceType::SINK>(const device_id_t&) const;
+    template const device_handle_t<DeviceType::SRC>* DeviceM::get<DeviceType::SRC>(const device_id_t&) const;
 
     template std::vector<device_id_t> DeviceM::ids<DeviceType::SINK>() const;
     template std::vector<device_id_t> DeviceM::ids<DeviceType::SRC>() const;

@@ -1,9 +1,8 @@
-#include "audio/Pipeline/Pipeline.hpp"
 #include "miniaudio.h"
 #include "spdlog/spdlog.h"
 
 #include <stdio.h>
-#include <audio/Engine/Engine.hpp>
+#include <audio/Engine/engine.hpp>
 #include <audio/device/device.hpp>
 #include <audio/node/sink_node.hpp>
 
@@ -16,17 +15,38 @@ int main(int argc, char** argv){
     engine.init();
     engine.start();
 
-    const auto& src_ids = engine.device_m().ids<DeviceType::SRC>();
-    const auto& src_device = engine.device_m().device<DeviceType::SRC>(src_ids[0]);
+    const auto& src_ids = engine.device.ids<DeviceType::SRC>();
+    const auto& src_device = engine.device.get<DeviceType::SRC>(src_ids[0]);
 
-    const auto& sink_ids = engine.device_m().ids<DeviceType::SRC>();
-    const auto& sink_device = engine.device_m().device<DeviceType::SRC>(sink_ids[0]);
+    const auto& sink_ids = engine.device.ids<DeviceType::SRC>();
+    const auto& sink_device = engine.device.get<DeviceType::SRC>(sink_ids[0]);
 
-    Pipeline pipeline{};
 
-    pipeline.effect(SinkNode{});
+    const int N = 2;
 
-//
+    auto [pipeline, id] = pipeline::make();
+
+    const auto& src_container = pipeline.connect(SrcNode{src_device}).split(N);
+    const auto& src_container = pipeline->SrcNode(src_device)->split(N);
+    auto& nodes = src_container[0]->ReverbNode()->split(N);
+    // do same this with src_container[1].
+
+    nodes[0]->GainNode(10amp) -> MixerNode(mixer);
+    nodes[1]->GainNode(3amp) -> MixerNode(mixer);
+
+    mixer->SinkNode{sink_device}
+
+    
+
+    engine.pipeline.store(id, std::move(pipeline));
+
+
+    engine.pipeline.build(id);
+    engine.pipeline.start(id);
+    engine.pipeline.stop(id);
+    engine.pipeline.destroy(id);
+
+
     //pipeline->src(src);
     //pipeline->src(sink);
     //pipeline.effect(reverb, ApplyOn::pull);

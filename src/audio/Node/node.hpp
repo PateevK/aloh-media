@@ -9,6 +9,10 @@ namespace alo::audio{
 template <typename T>
 concept NodeConcept = requires (T node) {
 {node.connect()} -> std::same_as<void>;
+{node.pull()} -> std::same_as<void>;
+{node.push()} -> std::same_as<void>;
+{node.build()} -> std::same_as<void>;
+{node.start()} -> std::same_as<void>;
 };  
 
 class Node{

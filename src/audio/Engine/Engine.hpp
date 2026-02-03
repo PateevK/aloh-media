@@ -2,8 +2,7 @@
 
 #include <audio/Pipeline/Pipeline.hpp>
 #include "device_m.hpp"
-
-
+#include "pipeline_m.hpp"
 
 namespace alo::audio{
 
@@ -17,11 +16,11 @@ namespace alo::audio{
         void start();
         void stop();
         void uninit(); 
-        auto device_m() const -> const DeviceM&;
-    
+        
+        PipelineM pipeline{this};
+        DeviceM device{};
         private:
-
-        DeviceM _device_m{};
+        
     };
 
 } // alo::audio

@@ -1,28 +1,26 @@
 #pragma once
 
+#include <string>
+
 #include <audio/node/node.hpp>
-#include <vector>
 
-namespace alo{
-
-namespace audio{
+namespace alo::audio{
     
+    using pipeline_id_t = std::string;
+
     class Pipeline{
     public:
-    
-    auto src(Node src);
-    const auto& src() const;
 
-    auto sink(Node sink);
-    const auto& sink() const;
+    void connect(Node node);
     
-    // Append an effect to be applyed after all effects already appended.
-    auto effect(Node node) -> void;
+    void split(size_t num);
+    void build();
     
     private:
-        std::vector<Node> _effect_vec;        
     };
 
-} // audio
+    namespace pipeline{
+        std::tuple<std::unique_ptr<Pipeline>, pipeline_id_t> make();
+    }
 
-} // alo
+}; // alo::audio

@@ -17,10 +17,6 @@ namespace audio{
         }
 
     template<>
-    Device<DeviceType::SINK>::~Device(){
-    }
-
-    template<>
     void Device<DeviceType::SINK>::cb(device_cb_t _cb){
         _data_cb = _cb;  
     }

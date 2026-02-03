@@ -21,7 +21,6 @@ public:
     // Type-safe callback signature
     using device_cb_t = std::function<void(Device<Type>* device, void* pOutput, const void* pInput, uint32_t frameCount)>;
 
-    Device(device_info_ptr info, device_id_t id);
     Device(Device&&) = default;
     Device& operator=(Device&&) = default;
     
@@ -29,21 +28,29 @@ public:
     Device(const Device&) = delete;
     Device& operator=(const Device&) = delete;
     ~Device();
-
+    
+    Device(device_info_ptr info, device_id_t id);
+    
     void cb(device_cb_t cb);
 
     void do_shit() const {
         std::println("some shit");
     }
 
+    
     device_id_t id() const;
     void id(device_id_t id);
+    bool is_init() const;
+    bool is_started() const;
     
     std::optional<err_t> init(const context_ptr& con); 
+    void unInit();
     std::optional<err_t> start();
     std::optional<err_t> stop();
 
     private:
+    bool _is_init = false;
+    bool _is_started = false;
     device_id_t _id{};
     device_ptr _device = nullptr;
     device_cb_t _data_cb;

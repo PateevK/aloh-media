@@ -1,4 +1,4 @@
-#include "Engine.hpp"
+#include "engine.hpp"
 #include "device_m.hpp"
 
 #include <miniaudio.h>
@@ -9,7 +9,7 @@ namespace alo{
 namespace audio{
 
         void Engine::init(){
-            _device_m.init();
+            device.init();
         }
 
         void Engine::start(){
@@ -21,11 +21,7 @@ namespace audio{
         }
 
         void Engine::uninit(){
-                _device_m.uninit();
-        }
-
-        auto Engine::device_m() const -> const DeviceM& {
-                return _device_m;
+                device.uninit();
         }
 
 } // audio

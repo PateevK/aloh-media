@@ -16,10 +16,6 @@ namespace audio{
     }
 
     template<>
-    Device<DeviceType::SRC>::~Device(){
-    }
-
-    template<>
     void Device<DeviceType::SRC>::cb(device_cb_t _cb){
         _data_cb = _cb;  
     }
