@@ -21,20 +21,19 @@ int main(int argc, char** argv){
     const auto& sink_ids = engine.device.ids<DeviceType::SRC>();
     const auto& sink_device = engine.device.get<DeviceType::SRC>(sink_ids[0]);
 
-
     const int N = 2;
 
     auto [pipeline, id] = pipeline::make();
 
-    const auto& src_container = pipeline.connect(SrcNode{src_device}).split(N);
-    const auto& src_container = pipeline->SrcNode(src_device)->split(N);
-    auto& nodes = src_container[0]->ReverbNode()->split(N);
+    //const auto& src_container = pipeline.connect(SrcNode{src_device}).split(N);
+    //const auto& src_container = pipeline->SrcNode(src_device)->split(N);
+    //auto& nodes = src_container[0]->ReverbNode()->split(N);
     // do same this with src_container[1].
 
-    nodes[0]->GainNode(10amp) -> MixerNode(mixer);
-    nodes[1]->GainNode(3amp) -> MixerNode(mixer);
+    //nodes[0]->GainNode(10amp) -> MixerNode(mixer);
+    //nodes[1]->GainNode(3amp) -> MixerNode(mixer);
 
-    mixer->SinkNode{sink_device}
+    //mixer->SinkNode{sink_device}
 
     
 
