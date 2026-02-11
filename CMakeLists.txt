@@ -14,7 +14,6 @@ add_subdirectory(${ALO_THIRD_PARTY_DIR}/spdlog)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_executable(${PROJECT_NAME} 
-    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
     ${ALO_THIRD_PARTY_DIR}/miniaudio/miniaudio.c
 )
 
