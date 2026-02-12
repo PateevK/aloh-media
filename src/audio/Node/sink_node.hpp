@@ -15,16 +15,19 @@ namespace aa = alo::audio;
 class Sink{
     aa::device_handle_t<aa::DeviceType::SINK> _device{};
     // Sink is terminal - no next node needed
-    Node* _prev_node = nullptr;
+    Node* _other_node = nullptr;
+    // Save log's pants.
+    bool _hot_path_log_b{false};
 public:
     Sink(aa::device_handle_t<aa::DeviceType::SINK> device) : _device(device) {}
 
-    void connect(Node* next) {
+    void connect(Node* node) {
         spdlog::debug("Sink::connect (terminal node)");
-        if(next == nullptr){
+        if(node == nullptr){
             spdlog::warn("{} | if(next == nullptr)", FUNC_SIG);
         }
-        _prev_node = next;
+
+        _other_node = node;
     }
 
     void push() const {
@@ -32,16 +35,15 @@ public:
     }
     
     void pull() {
-        spdlog::debug("{}", FUNC_SIG);
-        _prev_node->pull();
+        if(_other_node == nullptr  && !_hot_path_log_b){
+            spdlog::error("{} | if(_prev_node == nullptr)", FUNC_SIG);
+            _hot_path_log_b = true;
+            return;
+        }
+        _other_node->pull();
     }
 
-    static auto effect(Device<DeviceType::SINK>* device, void* output, const void* input, uint32_t frame_cout)-> void {
-        spdlog::info("pupupupuuuuppupu");
-
-    }
-
-    void build() const {
+    void build(){
         spdlog::debug("{}", FUNC_SIG);
         auto err = _device->init();
         if(err){
@@ -49,7 +51,11 @@ public:
             return;
         }
 
-        _device->cb(effect);
+        auto cb = [this](Device<DeviceType::SINK>* device, void* pOutput, const void* pInput, uint32_t frameCount){
+            this->pull();
+        };
+
+        _device->cb(cb);
 
     }
     

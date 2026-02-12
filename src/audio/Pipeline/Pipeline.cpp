@@ -8,17 +8,21 @@
 
 namespace alo::audio {
 
-Node& Pipeline::connect(Node node) {
-    _node_container.emplace_back(std::move(node));
-    
-    // If there was a previous node, connect it to the new one
-    if (_node_container.size() > 1) {
-        Node& last_node = _node_container[_node_container.size() - 2];
-        Node& current_node = _node_container.back();
-        last_node.connect(&current_node);
+Node* Pipeline::connect(Node node) {
+
+    if(_node_container.empty()){
+        _node_container.emplace_back(std::make_unique<Node>(std::move(node)));
+        return _node_container.back().get();
     }
+
+    auto& prev_node = _node_container.back();
+    _node_container.emplace_back(std::make_unique<Node>(std::move(node)));
+    auto& current_node = _node_container.back();
     
-    return _node_container.back();
+    prev_node->connect(current_node.get());
+    current_node->connect(prev_node.get());
+    
+    return current_node.get();
 }
 
 void Pipeline::split(size_t num) {
@@ -27,14 +31,14 @@ void Pipeline::split(size_t num) {
 
 void Pipeline::build() {
     for(auto& node : _node_container){
-        node.build();
+        node->build();
     }
     // Minimal no-op.
 }
 
 void Pipeline::start() {
     auto& sink = _node_container.back();
-    sink.start();
+    sink->start();
 }
 
 std::tuple<std::unique_ptr<Pipeline>, pipeline_id_t> pipeline::make() {
