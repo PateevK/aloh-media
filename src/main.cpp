@@ -2,9 +2,10 @@
 #include "spdlog/spdlog.h"
 
 #include <stdio.h>
-#include <audio/Engine/engine.hpp>
+#include <audio/engine/engine.hpp>
 #include <audio/device/device.hpp>
 #include <audio/node/sink_node.hpp>
+#include <audio/node/src_node.hpp>
 
 int main(int argc, char** argv){
     using namespace alo::audio;
@@ -16,35 +17,33 @@ int main(int argc, char** argv){
     engine.start();
 
     const auto& src_ids = engine.device.ids<DeviceType::SRC>();
-    const auto& src_device = engine.device.get<DeviceType::SRC>(src_ids[0]);
+    const auto src_device = engine.device.get<DeviceType::SRC>(src_ids[0]);
 
-    const auto& sink_ids = engine.device.ids<DeviceType::SRC>();
-    const auto& sink_device = engine.device.get<DeviceType::SRC>(sink_ids[0]);
-
-    const int N = 2;
-
-    auto [pipeline, id] = pipeline::make();
-
-    //const auto& src_container = pipeline.connect(SrcNode{src_device}).split(N);
-    //const auto& src_container = pipeline->SrcNode(src_device)->split(N);
-    //auto& nodes = src_container[0]->ReverbNode()->split(N);
-    // do same this with src_container[1].
-
-    //nodes[0]->GainNode(10amp) -> MixerNode(mixer);
-    //nodes[1]->GainNode(3amp) -> MixerNode(mixer);
-
-    //mixer->SinkNode{sink_device}
+    const auto& sink_ids = engine.device.ids<DeviceType::SINK>();
+    const auto sink_device = engine.device.get<DeviceType::SINK>(sink_ids[0]);
 
     
+    auto [pipeline, id] = pipeline::make();
+    
+    pipeline->connect(node::Src(src_device));
+    pipeline->connect(node::Sink(sink_device));
+    
+    //const int N = 2;
+    //const auto& src_container = pipeline->connect(SrcNode(src_device))->split(N);
+    //// Do same this with src_container[1].
+    //auto& nodes = src_container[0]->ReverbNode()->split(N);
+//
+    //auto mixer = mixer::make(); 
+    //nodes[0]->GainNode(10) -> MixerNode(mixer);
+    //nodes[1]->GainNode(3) -> MixerNode(mixer);
+    //mixer->SinkNode{sink_device};
 
     engine.pipeline.store(id, std::move(pipeline));
-
 
     engine.pipeline.build(id);
     engine.pipeline.start(id);
     engine.pipeline.stop(id);
     engine.pipeline.destroy(id);
-
 
     //pipeline->src(src);
     //pipeline->src(sink);

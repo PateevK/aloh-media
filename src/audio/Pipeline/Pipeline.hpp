@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <audio/node/node.hpp>
 
@@ -11,12 +12,19 @@ namespace alo::audio{
     class Pipeline{
     public:
 
-    void connect(Node node);
+    Node& connect(Node node);
+    
+    template<typename NodeT>
+    Node& connect(NodeT&& concrete_node) {
+        return connect(Node(std::forward<NodeT>(concrete_node)));
+    }
     
     void split(size_t num);
     void build();
     
     private:
+        using node_container_t = std::vector<Node>; 
+        node_container_t _node_container;
     };
 
     namespace pipeline{

@@ -11,8 +11,8 @@ if(WIN32)
     set(CMAKE_CXX_COMPILER "D:/someProgs/msys2/clang64/bin/clang++.exe")
 
     # Crucial Flags for MinGW
-    set(CMAKE_C_FLAGS "--target=x86_64-w64-mingw32")
-    set(CMAKE_CXX_FLAGS "--target=x86_64-w64-mingw32")
+    set(CMAKE_C_FLAGS_INIT "--target=x86_64-w64-mingw32")
+    set(CMAKE_CXX_FLAGS_INIT "--target=x86_64-w64-mingw32")
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 else()

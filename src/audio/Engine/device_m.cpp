@@ -29,15 +29,15 @@ namespace  alo::audio {
         std::vector<device_id_t> ids;
 
         auto get_id = [](const auto& i){
-            return i.second.id();
+            return i.second->id();
         };
 
         if constexpr (type == DeviceType::SINK){
-            std::ranges::transform(_sink, std::back_inserter(ids), get_id);
+            std::ranges::transform(_sink_container, std::back_inserter(ids), get_id);
             return std::move(ids);
         }
         else if constexpr (type == DeviceType::SRC){
-            std::ranges::transform(_src, std::back_inserter(ids), get_id);
+            std::ranges::transform(_src_container, std::back_inserter(ids), get_id);
             return std::move(ids);
         }
         else {
@@ -47,18 +47,18 @@ namespace  alo::audio {
 
     // Be carefull )
     template<DeviceType type>
-    const device_handle_t<type>* DeviceM::get(const device_id_t& id) const{
+    const device_handle_t<type> DeviceM::get(const device_id_t& id) const{
 
         if constexpr (type == DeviceType::SINK){
-            auto it = _sink.find(id);
-            if (it != _sink.end()) {
-                return &it->second;
+            auto it = _sink_container.find(id);
+            if (it != _sink_container.end()) {
+                return it->second;
             }
         }
         else if constexpr (type == DeviceType::SRC){
-            auto it = _src.find(id);
-            if (it != _src.end()) {
-                return &it->second;
+            auto it = _src_container.find(id);
+            if (it != _src_container.end()) {
+                return it->second;
             }
         }
         else {
@@ -87,7 +87,9 @@ namespace  alo::audio {
             *info->get() = pPlaybackInfos[iDevice];
 
             std::string device_id(info->get()->name);
-            _sink.try_emplace(device_id, std::move(info), device_id);
+            _sink_container.try_emplace(device_id, 
+                std::make_shared<Device<DeviceType::SINK>>(std::move(info), device_id)
+            );
         }
 
         for (ma_uint32 iDevice = 0; iDevice < captureCount; iDevice += 1) {
@@ -95,15 +97,17 @@ namespace  alo::audio {
             *info->get() = pCaptureInfos[iDevice];
 
             std::string device_id(info->get()->name);
-            _src.try_emplace(device_id, std::move(info), device_id);
+            _src_container.try_emplace(device_id, 
+                std::make_shared<Device<DeviceType::SRC>>(std::move(info), device_id)
+            );
         }
 
         
     }
 
         // Explicit template instantiations
-    template const device_handle_t<DeviceType::SINK>* DeviceM::get<DeviceType::SINK>(const device_id_t&) const;
-    template const device_handle_t<DeviceType::SRC>* DeviceM::get<DeviceType::SRC>(const device_id_t&) const;
+    template const device_handle_t<DeviceType::SINK> DeviceM::get<DeviceType::SINK>(const device_id_t&) const;
+    template const device_handle_t<DeviceType::SRC> DeviceM::get<DeviceType::SRC>(const device_id_t&) const;
 
     template std::vector<device_id_t> DeviceM::ids<DeviceType::SINK>() const;
     template std::vector<device_id_t> DeviceM::ids<DeviceType::SRC>() const;
