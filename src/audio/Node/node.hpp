@@ -12,6 +12,7 @@ class Node{
         virtual void connect(Node* next) = 0;
         virtual void start() = 0;
         virtual void build() = 0;
+        virtual void pull() = 0;
     };
 
     template<typename NodeT>
@@ -30,6 +31,10 @@ class Node{
 
         void build() override {
             _node.build();
+        }
+
+        void pull() override {
+            _node.pull();
         }
 
     private:
@@ -54,6 +59,10 @@ public:
 
     void build(){
         pimpl->build();
+    }
+
+    void pull(){
+        pimpl->pull();
     }
 
 };

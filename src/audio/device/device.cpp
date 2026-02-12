@@ -69,7 +69,7 @@ template<DeviceType type>
 Device<type>::~Device(){
     auto res = stop();
     if(res){
-        spdlog::error("{} | couldnt stop the device, forcing unInit()", FUNC_SIG);
+        spdlog::error("{} | device is not stopped, forcing unInit()", FUNC_SIG);
     }
     unInit();
 }
