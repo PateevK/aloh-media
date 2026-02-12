@@ -43,9 +43,15 @@ std::optional<err_t> Device<type>::init(){
         return 1;
     }
 
-    conf.playback.pDeviceID = &_info->get()->id;
-    conf.playback.format    = ma_format_f32;
-    conf.playback.channels  = 2;
+    if constexpr (type == DeviceType::SRC) {
+        conf.capture.pDeviceID = &_info->get()->id;
+        conf.capture.format    = ma_format_f32;
+        conf.capture.channels  = 2;
+    } else {
+        conf.playback.pDeviceID = &_info->get()->id;
+        conf.playback.format    = ma_format_f32;
+        conf.playback.channels  = 2;
+    }
         
     conf.dataCallback = _data_callback_c;
     conf.pUserData    = this;

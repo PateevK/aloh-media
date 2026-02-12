@@ -1,6 +1,8 @@
 #pragma once
 
 #include "spdlog/spdlog.h"
+#include <cstdint>
+#include <cstring>
 #include <print>
 
 #include <audio/device/device.hpp>
@@ -34,13 +36,16 @@ public:
         std::println("Sink::push ???");
     }
     
-    void pull() {
-        if(_other_node == nullptr  && !_hot_path_log_b){
-            spdlog::error("{} | if(_prev_node == nullptr)", FUNC_SIG);
-            _hot_path_log_b = true;
-            return;
+    // Pull audio data from connected node into the provided buffer
+    uint32_t pull(float* data, uint32_t frame_count) {
+        if (_other_node == nullptr) {
+            if (!_hot_path_log_b) {
+                spdlog::error("{} | if(_other_node == nullptr)", FUNC_SIG);
+                _hot_path_log_b = true;
+            }
+            return 0;
         }
-        _other_node->pull();
+        return _other_node->pull(data, frame_count);
     }
 
     void build(){
@@ -52,7 +57,15 @@ public:
         }
 
         auto cb = [this](Device<DeviceType::SINK>* device, void* pOutput, const void* pInput, uint32_t frameCount){
-            this->pull();
+            float* output_data = static_cast<float*>(pOutput);
+            uint32_t frames_read = this->pull(output_data, frameCount);
+            
+            // If we didn't get enough data, zero-fill the rest to avoid noise
+            if (frames_read < frameCount) {
+                uint32_t channels = 2; // TODO: get from device config
+                std::memset(output_data + (frames_read * channels), 0, 
+                           (frameCount - frames_read) * channels * sizeof(float));
+            }
         };
 
         _device->cb(cb);

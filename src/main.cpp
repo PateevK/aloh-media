@@ -42,6 +42,8 @@ int main(int argc, char** argv){
     engine.pipeline.store(id, std::move(pipeline));
     engine.pipeline.build(id);
     engine.pipeline.start(id);
+    printf("Press Enter to exit...\n");
+    getchar();
     engine.pipeline.stop(id);
     engine.pipeline.destroy(id);
 
@@ -128,8 +130,7 @@ int main(int argc, char** argv){
     //    return -3;
     //}
 //
-    printf("Press Enter to exit...\n");
-    getchar();
+  
     //
     //ma_device_uninit(&device);
     //ma_encoder_uninit(&encoder);

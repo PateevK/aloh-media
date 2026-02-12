@@ -84,7 +84,19 @@ namespace  alo::audio {
 
         for (ma_uint32 iDevice = 0; iDevice < playbackCount; iDevice += 1) {
             auto info = device::info::make();
-            *info->get() = pPlaybackInfos[iDevice];
+            
+            // Get full device info including native data formats
+            auto result = ma_context_get_device_info(
+                _context->get(), 
+                ma_device_type_playback, 
+                &pPlaybackInfos[iDevice].id, 
+                info->get()
+            );
+            
+            if (result != MA_SUCCESS) {
+                spdlog::warn("{} | Failed to get device info for playback device {}", FUNC_SIG, iDevice);
+                *info->get() = pPlaybackInfos[iDevice]; // Fallback to basic info
+            }
 
             std::string device_id(info->get()->name);
             _sink_container.try_emplace(device_id, 
@@ -98,7 +110,19 @@ namespace  alo::audio {
 
         for (ma_uint32 iDevice = 0; iDevice < captureCount; iDevice += 1) {
             auto info = device::info::make();
-            *info->get() = pCaptureInfos[iDevice];
+            
+            // Get full device info including native data formats
+            auto result = ma_context_get_device_info(
+                _context->get(), 
+                ma_device_type_capture, 
+                &pCaptureInfos[iDevice].id, 
+                info->get()
+            );
+            
+            if (result != MA_SUCCESS) {
+                spdlog::warn("{} | Failed to get device info for capture device {}", FUNC_SIG, iDevice);
+                *info->get() = pCaptureInfos[iDevice]; // Fallback to basic info
+            }
 
             std::string device_id(info->get()->name);
             _src_container.try_emplace(device_id, 

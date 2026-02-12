@@ -37,8 +37,9 @@ void Pipeline::build() {
 }
 
 void Pipeline::start() {
-    auto& sink = _node_container.back();
-    sink->start();
+      for(auto& node : _node_container){
+        node->start();
+    }
 }
 
 std::tuple<std::unique_ptr<Pipeline>, pipeline_id_t> pipeline::make() {

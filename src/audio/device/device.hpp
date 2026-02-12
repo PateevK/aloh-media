@@ -1,7 +1,9 @@
 #pragma once
 
 #include <audio/Utils/AudioTypes.hpp>
+#include <audio/Utils/ring_buffer.hpp>
 
+#include <cstdint>
 #include <optional>
 #include <functional>
 #include <print>
@@ -48,7 +50,7 @@ public:
     std::optional<err_t> start();
     std::optional<err_t> stop();
 
-    private:
+private:
     bool _is_init = false;
     bool _is_started = false;
     device_id_t _id{};
@@ -56,6 +58,9 @@ public:
     device_cb_t _data_cb;
     device_info_ptr _info{};
     context_ref _context{};
+    union{
+        utils::RingBuffer<utils::RingBufferType::PCM> _rb;
+    };
 
     static void _data_callback_c(ma_device* pDevice, void* pOutput, const void* pInput, uint32_t frameCount);
 };
