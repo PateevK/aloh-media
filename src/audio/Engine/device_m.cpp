@@ -88,7 +88,11 @@ namespace  alo::audio {
 
             std::string device_id(info->get()->name);
             _sink_container.try_emplace(device_id, 
-                std::make_shared<Device<DeviceType::SINK>>(std::move(info), device_id)
+                std::make_shared<Device<DeviceType::SINK>>(
+                    std::move(info), 
+                    device_id,
+                    _context
+                )
             );
         }
 
@@ -98,7 +102,7 @@ namespace  alo::audio {
 
             std::string device_id(info->get()->name);
             _src_container.try_emplace(device_id, 
-                std::make_shared<Device<DeviceType::SRC>>(std::move(info), device_id)
+                std::make_shared<Device<DeviceType::SRC>>(std::move(info), device_id, _context)
             );
         }
 

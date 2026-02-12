@@ -47,6 +47,7 @@ namespace pcm_rb{
 }
 using context_ptr = std::unique_ptr<ma_context_wrapper, ContextDeleter>;
 using context_t = context_ptr;
+using context_ref = const context_t&;
 
 namespace context{
     auto make() noexcept -> context_t ;

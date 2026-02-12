@@ -7,28 +7,29 @@
 
 namespace alo::audio{
     
-    using pipeline_id_t = std::string;
+using pipeline_id_t = std::string;
 
-    class Pipeline{
-    public:
-
+class Pipeline{
+public:    
     Node& connect(Node node);
     
     template<typename NodeT>
     Node& connect(NodeT&& concrete_node) {
         return connect(Node(std::forward<NodeT>(concrete_node)));
     }
-    
+
     void split(size_t num);
     void build();
-    
-    private:
-        using node_container_t = std::vector<Node>; 
-        node_container_t _node_container;
-    };
+    void start();
 
-    namespace pipeline{
-        std::tuple<std::unique_ptr<Pipeline>, pipeline_id_t> make();
-    }
+private:
+    using node_container_t = std::vector<Node>; 
+    node_container_t _node_container;
+
+}; // class Pipeline
+
+namespace pipeline{
+    std::tuple<std::unique_ptr<Pipeline>, pipeline_id_t> make();
+}
 
 }; // alo::audio

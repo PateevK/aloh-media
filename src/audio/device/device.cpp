@@ -29,7 +29,7 @@ bool Device<type>::is_started() const {
 }
 
 template<DeviceType type>
-std::optional<err_t> Device<type>::init(const context_ptr& context){
+std::optional<err_t> Device<type>::init(){
     if(is_init()){
         return std::nullopt;
     }
@@ -50,12 +50,12 @@ std::optional<err_t> Device<type>::init(const context_ptr& context){
     conf.dataCallback = _data_callback_c;
     conf.pUserData    = this;
     
-    if(!context){
-        spdlog::error("{} | context is false", FUNC_SIG);
+    if(!_context){
+        spdlog::error("{} | if(!_context)", FUNC_SIG);
         return 2;
     }
 
-    auto result = ma_device_init(context->get(), &conf, _device->get());
+    auto result = ma_device_init(_context->get(), &conf, _device->get());
     if(result != MA_SUCCESS){
         spdlog::error("{} | result != MA_SUCCESS", FUNC_SIG);
         return result;
@@ -121,8 +121,8 @@ template bool Device<DeviceType::SRC>::is_started() const;
 template bool Device<DeviceType::SINK>::is_started() const;
 template bool Device<DeviceType::SRC>::is_init() const;
 template bool Device<DeviceType::SINK>::is_init() const;
-template std::optional<err_t> Device<DeviceType::SINK>::init(const context_ptr& con);
-template std::optional<err_t> Device<DeviceType::SRC>::init(const context_ptr& con);
+template std::optional<err_t> Device<DeviceType::SINK>::init();
+template std::optional<err_t> Device<DeviceType::SRC>::init();
 template void Device<DeviceType::SRC>::unInit();
 template void Device<DeviceType::SINK>::unInit();
 template std::optional<err_t>  Device<DeviceType::SINK>::start();

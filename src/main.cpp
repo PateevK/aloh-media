@@ -1,4 +1,5 @@
 #include "miniaudio.h"
+#include "spdlog/common.h"
 #include "spdlog/spdlog.h"
 
 #include <stdio.h>
@@ -10,7 +11,7 @@
 int main(int argc, char** argv){
     using namespace alo::audio;
 
-    spdlog::set_level(spdlog::level::info);
+    spdlog::set_level(spdlog::level::debug);
 
     Engine engine;
     engine.init();
@@ -39,7 +40,6 @@ int main(int argc, char** argv){
     //mixer->SinkNode{sink_device};
 
     engine.pipeline.store(id, std::move(pipeline));
-
     engine.pipeline.build(id);
     engine.pipeline.start(id);
     engine.pipeline.stop(id);

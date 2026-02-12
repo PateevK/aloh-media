@@ -9,7 +9,7 @@ namespace audio{
 
 
     template<>
-    Device<DeviceType::SRC>::Device(device_info_ptr info,  device_id_t id);
+    Device<DeviceType::SRC>::Device(device_info_ptr info,  device_id_t id, context_ref context);
 
     template<>
     void Device<DeviceType::SRC>::cb(device_cb_t _cb);

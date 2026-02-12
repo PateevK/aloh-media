@@ -12,8 +12,8 @@ namespace audio{
     // ============ Device<DeviceType::SINK> (Playback) ============
 
     template<>
-    Device<DeviceType::SINK>::Device(device_info_ptr info, device_id_t id) 
-        : _device(device::make()), _info(std::move(info)), _id(std::move(id)){
+    Device<DeviceType::SINK>::Device(device_info_ptr info, device_id_t id, context_ref context) 
+        : _device(device::make()), _info(std::move(info)), _id(std::move(id)), _context(context){
         }
 
     template<>

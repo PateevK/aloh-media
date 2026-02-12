@@ -23,7 +23,7 @@ namespace alo::audio {
         
         void store(pipeline_id_t id, pipeline_handle_t pipeline);
         std::optional<err_t> build(const pipeline_id_t& id);
-        void start(const pipeline_id_t& id);
+        std::optional<err_t> start(const pipeline_id_t& id);
         void stop(const pipeline_id_t& id);
         void destroy(const pipeline_id_t& id);
 

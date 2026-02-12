@@ -11,8 +11,8 @@ namespace audio{
     // ============ Device<DeviceType::SRC> (Capture) ============
 
     template<>
-    Device<DeviceType::SRC>::Device(device_info_ptr info,  device_id_t id)
-    : _device(device::make()), _info(std::move(info)), _id(std::move(id)) {
+    Device<DeviceType::SRC>::Device(device_info_ptr info,  device_id_t id, context_ref context)
+    : _device(device::make()), _info(std::move(info)), _id(std::move(id)), _context(context) {
     }
 
     template<>

@@ -29,7 +29,7 @@ public:
     Device& operator=(const Device&) = delete;
     ~Device();
     
-    Device(device_info_ptr info, device_id_t id);
+    Device(device_info_ptr info, device_id_t id, context_ref context);
     
     void cb(device_cb_t cb);
 
@@ -43,7 +43,7 @@ public:
     bool is_init() const;
     bool is_started() const;
     
-    std::optional<err_t> init(const context_ptr& con); 
+    std::optional<err_t> init(); 
     void unInit();
     std::optional<err_t> start();
     std::optional<err_t> stop();
@@ -55,6 +55,7 @@ public:
     device_ptr _device = nullptr;
     device_cb_t _data_cb;
     device_info_ptr _info{};
+    context_ref _context{};
 
     static void _data_callback_c(ma_device* pDevice, void* pOutput, const void* pInput, uint32_t frameCount);
 };

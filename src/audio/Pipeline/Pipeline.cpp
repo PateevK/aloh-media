@@ -26,7 +26,15 @@ void Pipeline::split(size_t num) {
 }
 
 void Pipeline::build() {
+    for(auto& node : _node_container){
+        node.build();
+    }
     // Minimal no-op.
+}
+
+void Pipeline::start() {
+    auto& sink = _node_container.back();
+    sink.start();
 }
 
 std::tuple<std::unique_ptr<Pipeline>, pipeline_id_t> pipeline::make() {
