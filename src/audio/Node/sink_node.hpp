@@ -2,8 +2,8 @@
 
 #include "spdlog/spdlog.h"
 #include <cstdint>
-#include <cstring>
 #include <print>
+#include <vector>
 
 #include <audio/device/device.hpp>
 #include <audio/engine/device_m.hpp>
@@ -19,6 +19,9 @@ class Sink{
     Node* _other_node = nullptr;
     // Save log's pants.
     bool _hot_path_log_b{false};
+    // Temp buffer for pulling from upstream before writing to device
+    std::vector<float> _pull_buffer;
+
 public:
     Sink(aa::device_handle_t<aa::DeviceType::SINK> device) : _device(device) {}
 
@@ -47,30 +50,44 @@ public:
         return _other_node->pull(data, frame_count);
     }
 
+    // Device format info
+    uint32_t channels() const { return _device ? _device->channels() : 0; }
+    uint32_t sample_rate() const { return _device ? _device->sample_rate() : 0; }
+
     void build(){
-        spdlog::debug("{}", FUNC_SIG);
+        spdlog::debug("{} | {} | rate({}), ch({})", FUNC_SIG, _device->id(), _device->sample_rate(), _device->channels());
         auto err = _device->init();
         if(err){
             spdlog::error("{} | err = {}", FUNC_SIG, err.value());
             return;
         }
 
+        // Pre-allocate pull buffer (enough for typical callback sizes)
+        const uint32_t max_frames = 4096;
+        _pull_buffer.resize(max_frames * _device->channels());
+
+        // Callback: pull from upstream and write to device's buffer
         auto cb = [this](Device<DeviceType::SINK>* device, void* pOutput, const void* pInput, uint32_t frameCount){
-            float* output_data = static_cast<float*>(pOutput);
-            uint32_t frames_read = this->pull(output_data, frameCount);
+            if (_other_node == nullptr) {
+                return;
+            }
             
-            // If we didn't get enough data, zero-fill the rest to avoid noise
-            if (frames_read < frameCount) {
-                uint32_t channels = 2; // TODO: get from device config
-                std::memset(output_data + (frames_read * channels), 0, 
-                           (frameCount - frames_read) * channels * sizeof(float));
+            // Ensure buffer is large enough
+            const uint32_t samples_needed = frameCount * device->channels();
+            if (_pull_buffer.size() < samples_needed) {
+                _pull_buffer.resize(samples_needed);
+            }
+            
+            // Pull from upstream into temp buffer
+            uint32_t frames_read = this->pull(_pull_buffer.data(), frameCount);
+            
+            // Write to device's ring buffer (device will read from it after this callback)
+            if (frames_read > 0) {
+                device->write(_pull_buffer.data(), frames_read);
             }
         };
 
-        if(_device){
-            _device->cb(cb);
-        }
-
+        _device->cb(cb);
     }
     
     void start() {

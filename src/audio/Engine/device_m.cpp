@@ -108,7 +108,7 @@ namespace  alo::audio {
             
             _sink_container.try_emplace(
                 device_id, 
-                std::make_shared<Device<DeviceType::SINK>>( std::move(info), device_id, _context )
+                Device<DeviceType::SINK>::make(std::move(info), device_id, _context)
             );
         }
 
@@ -117,7 +117,7 @@ namespace  alo::audio {
 
             _src_container.try_emplace(
                 device_id, 
-                std::make_shared<Device<DeviceType::SRC>>(std::move(info), device_id, _context)
+                Device<DeviceType::SRC>::make(std::move(info), device_id, _context)
             );
         }
     }
