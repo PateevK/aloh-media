@@ -66,6 +66,3 @@ private:
 };
 
 } // alo::audio
-
-#include "./src.tpp" // IWYU pragma: keep
-#include "./sink.tpp" // IWYU pragma: keep

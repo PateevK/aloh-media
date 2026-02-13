@@ -16,7 +16,6 @@ namespace aa = alo::audio;
 
 class Sink{
     aa::device_handle_t<aa::DeviceType::SINK> _device{};
-    // Sink is terminal - no next node needed
     Node* _other_node = nullptr;
     // Save log's pants.
     bool _hot_path_log_b{false};
@@ -68,7 +67,9 @@ public:
             }
         };
 
-        _device->cb(cb);
+        if(_device){
+            _device->cb(cb);
+        }
 
     }
     

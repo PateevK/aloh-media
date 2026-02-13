@@ -1,4 +1,5 @@
 #include "device_m.hpp"
+#include "audio/Utils/AudioTypes.hpp"
 #include "audio/device/device.hpp"
 
 #include <algorithm>
@@ -9,6 +10,7 @@
 #include <spdlog/spdlog.h>
 
 #include <type_traits>
+#include <tuple>
 
 template<auto> 
 struct always_false : std::false_type {};
@@ -82,55 +84,42 @@ namespace  alo::audio {
             return;
         }
 
-        for (ma_uint32 iDevice = 0; iDevice < playbackCount; iDevice += 1) {
+        auto deviceInfo = [&]( int index, ma_device_type device_type, ma_device_info* infos){
             auto info = device::info::make();
-            
-            // Get full device info including native data formats
             auto result = ma_context_get_device_info(
                 _context->get(), 
-                ma_device_type_playback, 
-                &pPlaybackInfos[iDevice].id, 
+                device_type, 
+                &infos[index].id, 
                 info->get()
             );
             
             if (result != MA_SUCCESS) {
-                spdlog::warn("{} | Failed to get device info for playback device {}", FUNC_SIG, iDevice);
-                *info->get() = pPlaybackInfos[iDevice]; // Fallback to basic info
+                spdlog::warn("{} | Failed to get device info for playback device {}", FUNC_SIG, index);
+                *info->get() = infos[index]; // Fallback to basic info
             }
 
             std::string device_id(info->get()->name);
-            _sink_container.try_emplace(device_id, 
-                std::make_shared<Device<DeviceType::SINK>>(
-                    std::move(info), 
-                    device_id,
-                    _context
-                )
+
+            return std::make_tuple(device_id, std::move(info));
+        };
+
+        for (ma_uint32 iDevice = 0; iDevice < playbackCount; iDevice += 1) {
+            auto [device_id, info] = deviceInfo(iDevice, ma_device_type_playback, pPlaybackInfos);
+            
+            _sink_container.try_emplace(
+                device_id, 
+                std::make_shared<Device<DeviceType::SINK>>( std::move(info), device_id, _context )
             );
         }
 
         for (ma_uint32 iDevice = 0; iDevice < captureCount; iDevice += 1) {
-            auto info = device::info::make();
-            
-            // Get full device info including native data formats
-            auto result = ma_context_get_device_info(
-                _context->get(), 
-                ma_device_type_capture, 
-                &pCaptureInfos[iDevice].id, 
-                info->get()
-            );
-            
-            if (result != MA_SUCCESS) {
-                spdlog::warn("{} | Failed to get device info for capture device {}", FUNC_SIG, iDevice);
-                *info->get() = pCaptureInfos[iDevice]; // Fallback to basic info
-            }
+            auto [device_id, info] = deviceInfo(iDevice, ma_device_type_capture, pCaptureInfos);
 
-            std::string device_id(info->get()->name);
-            _src_container.try_emplace(device_id, 
+            _src_container.try_emplace(
+                device_id, 
                 std::make_shared<Device<DeviceType::SRC>>(std::move(info), device_id, _context)
             );
         }
-
-        
     }
 
         // Explicit template instantiations
