@@ -4,9 +4,17 @@
 #include "audio/Utils/AudioTypesImpl.hpp"
 
 #include <optional>
+#include <utility>
 #include <spdlog/spdlog.h>
 
 namespace alo::audio{
+    
+template<DeviceType type>
+Device<type> Device<type>::make(device_info_ptr info,  device_id_t id, context_ref context){
+    Device<type> device(std::move(info), id, context);
+    
+    return std::move(device);
+};
 
 template<DeviceType type>
 Device<type>::Device(device_info_ptr info,  device_id_t id, context_ref context) 
@@ -38,7 +46,7 @@ Device<type>::Device(device_info_ptr info,  device_id_t id, context_ref context)
     }
 
     // holly molly
-    new (reinterpret_cast<void*>(std::addressof(_rb))) utils::RingBuffer<utils::RingBufferType::PCM>(std::move(res.value()));
+    _rb = std::move(res.value());
 }
 
 template<DeviceType type>

@@ -39,8 +39,8 @@ public:
     // Returns number of frames available for writing
     uint32_t available_write() const;
     
-private:
     RingBuffer();
+private:
     bool _init(uint32_t channels, uint32_t size_in_frames);    
     pcm_rb_t _pcm_rb{};
     uint32_t _channels{0};

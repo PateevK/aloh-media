@@ -23,15 +23,10 @@ public:
     // Type-safe callback signature
     using device_cb_t = std::function<void(Device<Type>* device, void* pOutput, const void* pInput, uint32_t frameCount)>;
 
-    Device(Device&&) = default;
-    Device& operator=(Device&&) = default;
     
-    // Prevent copying (unique_ptr members make this non-copyable anyway)
-    Device(const Device&) = delete;
-    Device& operator=(const Device&) = delete;
+    static Device<Type> make(device_info_ptr info,  device_id_t id, context_ref context);
+    
     ~Device();
-    
-    Device(device_info_ptr info, device_id_t id, context_ref context);
     
     void cb(device_cb_t cb);
 
@@ -39,7 +34,6 @@ public:
         std::println("some shit");
     }
 
-    
     device_id_t id() const;
     void id(device_id_t id);
     bool is_init() const;
@@ -51,6 +45,15 @@ public:
     std::optional<err_t> stop();
 
 private:
+
+    Device(device_info_ptr info, device_id_t id, context_ref context);
+    Device(Device&&) = default;
+    Device& operator=(Device&&) = default;
+    
+    // Prevent copying (unique_ptr members make this non-copyable anyway)
+    Device(const Device&) = delete;
+    Device& operator=(const Device&) = delete;
+
     bool _is_init = false;
     bool _is_started = false;
     device_id_t _id{};
@@ -58,9 +61,7 @@ private:
     device_cb_t _data_cb;
     device_info_ptr _info{};
     context_ref _context{};
-    union{
-        utils::RingBuffer<utils::RingBufferType::PCM> _rb;
-    };
+    utils::RingBuffer<utils::RingBufferType::PCM> _rb;
 
     static void _data_callback_c(ma_device* pDevice, void* pOutput, const void* pInput, uint32_t frameCount);
 };
