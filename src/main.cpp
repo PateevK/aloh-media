@@ -7,6 +7,7 @@
 #include <audio/device/device.hpp>
 #include <audio/node/sink_node.hpp>
 #include <audio/node/src_node.hpp>
+#include <audio/node/converter.hpp>
 
 int main(int argc, char** argv){
     using namespace alo::audio;
@@ -27,6 +28,7 @@ int main(int argc, char** argv){
     auto [pipeline, id] = pipeline::make();
     
     pipeline->connect(node::Src(src_device));
+    pipeline->connect(node::Converter());
     pipeline->connect(node::Sink(sink_device));
     
     //const int N = 2;

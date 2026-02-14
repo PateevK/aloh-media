@@ -15,14 +15,14 @@ Node* Pipeline::connect(Node node) {
         return _node_container.back().get();
     }
 
-    auto& prev_node = _node_container.back();
+    auto* prev_node = _node_container.back().get();
     _node_container.emplace_back(std::make_unique<Node>(std::move(node)));
-    auto& current_node = _node_container.back();
+    auto* current_node = _node_container.back().get();
     
-    prev_node->connect(current_node.get());
-    current_node->connect(prev_node.get());
+    prev_node->connect(nullptr, current_node);
+    current_node->connect(prev_node, nullptr);
     
-    return current_node.get();
+    return current_node;
 }
 
 void Pipeline::split(size_t num) {

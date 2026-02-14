@@ -13,17 +13,15 @@ namespace aa = alo::audio;
 
 class Src{
     aa::device_handle_t<aa::DeviceType::SRC> _device{};
-    Node* _other_node = nullptr;
+    Node* _downstream = nullptr;
 
 public:
     Src(aa::device_handle_t<aa::DeviceType::SRC> device) : _device(device) {}
-        
-    void connect(Node* other) {
+
+    void connect(Node* upstream, Node* downstream) {
         spdlog::debug("Src::connect");
-        if(other == nullptr){
-            spdlog::warn("{} | if(other == nullptr)", FUNC_SIG);
-        }
-        _other_node = other;
+        (void)upstream;
+        if (downstream != nullptr) _downstream = downstream;
     }
 
     void push() {

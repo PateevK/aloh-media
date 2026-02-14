@@ -8,8 +8,8 @@ namespace alo::audio{
 
 struct Node;
 template<typename T>
-concept NodeConcept = requires (T node, Node* next, float* data, uint32_t frame_count) {
-    { node.connect(next) } -> std::same_as<void>;
+concept NodeConcept = requires (T node, Node* upstream, Node* downstream, float* data, uint32_t frame_count) {
+    { node.connect(upstream, downstream) } -> std::same_as<void>;
     { node.build() } -> std::same_as<void>;
     { node.start() } -> std::same_as<void>;
     { node.pull(data, frame_count) } -> std::convertible_to<uint32_t>;
@@ -19,7 +19,7 @@ class Node{
 
     struct NodeI {
         virtual ~NodeI() = default;    
-        virtual void connect(Node* next) = 0;
+        virtual void connect(Node* upstream, Node* downstream) = 0;
         virtual void start() = 0;
         virtual void build() = 0;
         virtual uint32_t pull(float* data, uint32_t frame_count) = 0;
@@ -32,8 +32,8 @@ class Node{
         NodeModel(NodeT node)
         : _node(std::move(node)) {}
 
-        void connect(Node* next) override {
-            _node.connect(next);
+        void connect(Node* upstream, Node* downstream) override {
+            _node.connect(upstream, downstream);
         }
         
         void start() override {
@@ -63,8 +63,8 @@ public:
         static_assert(NodeConcept<NodeT>, "NodeT does not satisfy NodeConcept");
     }
 
-    void connect(Node* next) {
-        pimpl->connect(next);
+    void connect(Node* upstream, Node* downstream) {
+        pimpl->connect(upstream, downstream);
     }
         
     void start() {

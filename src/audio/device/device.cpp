@@ -26,6 +26,12 @@ Device<type>::Device(device_info_ptr info,  device_id_t id, context_ref context)
     uint32_t num_channels_def = 2;      // Default: stereo
     uint32_t sample_rate_def = 48000;   // Default: 48kHz
     
+    for(int i{0}; i < num_formats; i++){
+        const auto& formats = _info->get()->nativeDataFormats[i];
+        spdlog::debug("{} | {} | DataFormat = ({}) | buffer for device: format = {}, sample_rate = {}, num_channels = {}", 
+        FUNC_SIG, _info->get()->name , i, std::to_underlying(formats.format), formats.sampleRate, formats.channels);
+    }
+
     if (num_formats >= 1) {
         const auto& formats = _info->get()->nativeDataFormats[0];
         _num_channels = formats.channels > 0 ? formats.channels : num_channels_def;
@@ -36,8 +42,8 @@ Device<type>::Device(device_info_ptr info,  device_id_t id, context_ref context)
     }
 
     const uint32_t size_in_frames = _sample_rate / 2;  // 500ms buffer
-    spdlog::info("{} | {} | buffer for device: size_in_frames = {}, sample_rate = {}, num_channels = {}", 
-        FUNC_SIG, _info->get()->name ,size_in_frames, _sample_rate, _num_channels);
+    spdlog::info("{} | {} | DataFormatCount ({}) | buffer for device: size_in_frames = {}, sample_rate = {}, num_channels = {}", 
+        FUNC_SIG, _info->get()->name , num_formats, size_in_frames, _sample_rate, _num_channels);
 
     auto res = utils::RingBuffer<utils::RingBufferType::PCM>::make(_num_channels, size_in_frames);
     if(!res.has_value()){
