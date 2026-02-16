@@ -6,7 +6,7 @@
 
 namespace alo::audio{
 
-struct Node;
+class Node;
 template<typename T>
 concept NodeConcept = requires (T node, Node* upstream, Node* downstream, float* data, uint32_t frame_count) {
     { node.connect(upstream, downstream) } -> std::same_as<void>;

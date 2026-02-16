@@ -10,7 +10,7 @@ namespace alo::audio {
     
     using pipeline_handle_t = std::unique_ptr<Pipeline>;
     using err_t = int;
-    struct Engine;
+    class Engine;
     class PipelineM {
     public:
         PipelineM() = delete;
