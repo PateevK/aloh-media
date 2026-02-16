@@ -23,7 +23,7 @@ target_link_libraries(${ALOH_MEDIA_IMPL}
 
 target_include_directories(${ALOH_MEDIA_IMPL} PUBLIC 
     ${ALO_INCLUDE_DIRS}
-    ${CMAKE_SOURCE_DIR}/third_party/miniaudio
+    ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/miniaudio
 )
 
 # Fancy macro
