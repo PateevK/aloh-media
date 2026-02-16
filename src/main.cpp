@@ -1,5 +1,4 @@
 #include "miniaudio.h"
-#include "spdlog/common.h"
 #include "spdlog/spdlog.h"
 
 #include <stdio.h>
@@ -26,6 +25,7 @@ int main(int argc, char** argv){
 
     
     auto [pipeline, id] = pipeline::make();
+    
     
     pipeline->connect(node::Src(src_device));
     pipeline->connect(node::Converter());

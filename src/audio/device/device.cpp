@@ -58,7 +58,7 @@ template<DeviceType type>
 Device<type>::~Device(){
     auto res = stop();
     if(res){
-        spdlog::error("{} | device is not stopped, forcing unInit()", FUNC_SIG);
+        spdlog::warn("{} | device is not stopped, forcing unInit()", FUNC_SIG);
     }
     unInit();
 }

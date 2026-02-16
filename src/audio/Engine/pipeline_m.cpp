@@ -38,7 +38,15 @@ namespace alo::audio {
     }
 
     void PipelineM::stop(const pipeline_id_t& id){
+        auto res = _id_to_pipeline.find(id);
+        if(res == _id_to_pipeline.end()){
+            spdlog::warn("{} | if(res == _id_to_pipeline.end())", FUNC_SIG);
+            return;
+        }
 
+        const auto& pipeline = res->second;
+
+        pipeline->stop();
     }
 
     void PipelineM::destroy(const pipeline_id_t& id){

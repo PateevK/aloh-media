@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <memory>
 #include <functional>
 
@@ -6,6 +7,8 @@ struct ma_device_wrapper;
 struct ma_pcm_rb_wrapper;
 struct ma_context_wrapper;
 struct ma_device_info_wrapper;
+struct ma_channel_converter_wrapper;
+struct ma_resampler_wrapper;
 
 struct DeviceDeleter {
     void operator()(ma_device_wrapper* device) const noexcept; 
@@ -21,6 +24,14 @@ struct ContextDeleter {
 
 struct DeviceInfoDeleter {
     void operator()(ma_device_info_wrapper* info) const noexcept;
+};
+
+struct ChConverterDeleter {
+    void operator()(ma_channel_converter_wrapper* info) const noexcept;
+};
+
+struct ResamplerDeleter {
+    void operator()(ma_resampler_wrapper* resampler) const noexcept;
 };
 
 using device_ptr = std::unique_ptr<ma_device_wrapper, DeviceDeleter>;
@@ -52,3 +63,17 @@ using context_ref = const context_t&;
 namespace context{
     auto make() noexcept -> context_t ;
 }
+
+using ch_converter_t = ma_channel_converter_wrapper;
+using ch_converter_ptr = std::unique_ptr<ma_channel_converter_wrapper, ChConverterDeleter>;
+namespace ch_converter{
+    auto make(uint32_t ch_in, uint32_t ch_out) noexcept -> ch_converter_ptr;
+}
+
+using resampler_ptr = std::unique_ptr<ma_resampler_wrapper, ResamplerDeleter>;
+namespace resampler{
+    auto make(uint32_t channels, uint32_t sample_rate_in, uint32_t sample_rate_out) noexcept -> resampler_ptr;
+}
+
+void resample(resampler_ptr const& resampler, const void* frames_in, uint64_t* frame_count_in, void* frames_out, uint64_t* frame_count_out);
+void convertchannels(ch_converter_ptr const& converter, void* frames_out, const void* frames_in, uint64_t frame_count);

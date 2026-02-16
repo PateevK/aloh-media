@@ -37,8 +37,14 @@ void Pipeline::build() {
 }
 
 void Pipeline::start() {
-      for(auto& node : _node_container){
+    for(auto& node : _node_container){
         node->start();
+    }
+}
+
+void Pipeline::stop(){
+    for(auto& node : _node_container){
+        node->stop();
     }
 }
 

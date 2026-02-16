@@ -59,6 +59,7 @@ public:
             return;
         }
 
+        spdlog::debug("{} | {} | rate({}), ch({})", FUNC_SIG, _device->id(), _device->sample_rate(), _device->channels());
         // Pre-allocate pull buffer (enough for typical callback sizes)
         const uint32_t max_frames = 4096;
         _pull_buffer.resize(max_frames * _device->channels());
@@ -93,6 +94,10 @@ public:
         if(err){
             spdlog::error("{} | err = {}", FUNC_SIG, err.value());
         }
+    }
+
+    void stop(){
+        
     }
 };
 

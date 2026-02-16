@@ -5,8 +5,8 @@
 
 #include <cstdint>
 #include <optional>
+#include <string>
 #include <functional>
-#include <print>
 
 // forward
 struct ma_device;
@@ -23,16 +23,11 @@ public:
     // Type-safe callback signature
     using device_cb_t = std::function<void(Device<Type>* device, void* pOutput, const void* pInput, uint32_t frameCount)>;
 
-    
     static std::shared_ptr<Device<Type>> make(device_info_ptr info,  device_id_t id, context_ref context);
 
     ~Device();
     
     void cb(device_cb_t cb);
-
-    void do_shit() const {
-        std::println("some shit");
-    }
 
     device_id_t id() const;
     void id(device_id_t id);

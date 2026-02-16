@@ -37,7 +37,6 @@ public:
         return _device->pull(data, frame_count);
     }
 
-    // Returns frames available for reading from device
     uint32_t available() const {
         if (!_device) {
             return 0;
@@ -66,6 +65,10 @@ public:
         if(err){
             spdlog::error("{} | err = {}", FUNC_SIG, err.value());
         }
+    }
+
+    void stop(){
+        
     }
 };
  

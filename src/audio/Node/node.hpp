@@ -12,7 +12,10 @@ concept NodeConcept = requires (T node, Node* upstream, Node* downstream, float*
     { node.connect(upstream, downstream) } -> std::same_as<void>;
     { node.build() } -> std::same_as<void>;
     { node.start() } -> std::same_as<void>;
+    { node.stop() } -> std::same_as<void>;
     { node.pull(data, frame_count) } -> std::convertible_to<uint32_t>;
+    { node.channels() } -> std::convertible_to<uint32_t>;
+    { node.sample_rate() } -> std::convertible_to<uint32_t>;
 };
 
 class Node{
@@ -22,7 +25,10 @@ class Node{
         virtual void connect(Node* upstream, Node* downstream) = 0;
         virtual void start() = 0;
         virtual void build() = 0;
+        virtual void stop() = 0;
         virtual uint32_t pull(float* data, uint32_t frame_count) = 0;
+        virtual uint32_t channels() const  = 0;
+        virtual uint32_t sample_rate() const = 0;
     };
 
     template<typename NodeT>
@@ -44,9 +50,16 @@ class Node{
             _node.build();
         }
 
+        void stop() override {
+            _node.stop();
+        }
+
         uint32_t pull(float* data, uint32_t frame_count) override {
             return _node.pull(data, frame_count);
         }
+
+        uint32_t channels() const override { return _node.channels(); }
+        uint32_t sample_rate() const override { return _node.sample_rate(); }
 
     private:
         NodeT _node;
@@ -75,9 +88,16 @@ public:
         pimpl->build();
     }
 
+    void stop(){
+        pimpl->stop();
+    }
+
     uint32_t pull(float* data, uint32_t frame_count){
         return pimpl->pull(data, frame_count);
     }
+
+    uint32_t channels() const { return pimpl->channels(); }
+    uint32_t sample_rate() const { return pimpl->sample_rate(); }
 
 };
 
