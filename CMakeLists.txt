@@ -9,7 +9,10 @@ set(ALO_THIRD_PARTY_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/
 )
 
-add_subdirectory(${ALO_THIRD_PARTY_DIR}/spdlog)
+if(NOT TARGET spdlog)
+    add_subdirectory(${ALO_THIRD_PARTY_DIR}/spdlog)
+endif()
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_library(${PROJECT_NAME} STATIC  
