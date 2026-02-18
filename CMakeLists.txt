@@ -34,9 +34,3 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:FUNC_SIG=__FUNCSIG__>
     $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:FUNC_SIG=__PRETTY_FUNCTION__>
 )
-
-if (MSVC)
-    #target_compile_options(${PROJECT_NAME} INTERFACE /W4 /WX) # WX treats warnings as errors
-else()
-    #target_compile_options(${PROJECT_NAME} INTERFACE -Wall -Wextra -Wpedantic -Werror)
-endif()
