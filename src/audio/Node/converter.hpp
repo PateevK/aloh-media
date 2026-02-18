@@ -84,6 +84,11 @@ public:
             return;
         }
 
+        _ch_in  = up_ch;
+        _ch_out = down_ch;
+        _sr_in  = up_smpl;
+        _sr_out = down_smpl;
+
         _initChannels(up_ch, down_ch);
         _initSamples(down_ch, up_smpl, down_smpl);
     }
