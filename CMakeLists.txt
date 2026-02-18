@@ -26,9 +26,12 @@ PUBLIC
 aloh::media-impl
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC 
+target_include_directories(${PROJECT_NAME} 
+PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${ALO_THIRD_PARTY_DIR}/miniaudio
+PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/
 ) 
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
