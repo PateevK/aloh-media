@@ -1,6 +1,6 @@
 #pragma once
 
-#include <audio/Pipeline/Pipeline.hpp>
+#include <audio/pipeline/pipeline.hpp>
 #include "device_m.hpp"
 #include "pipeline_m.hpp"
 

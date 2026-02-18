@@ -1,4 +1,4 @@
-#include "Pipeline.hpp"
+#include "pipeline.hpp"
 
 #include <atomic>
 #include <memory>

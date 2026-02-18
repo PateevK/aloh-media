@@ -1,10 +1,8 @@
 
 #include <stdio.h>
-#include <audio/engine/engine.hpp>
-#include <audio/device/device.hpp>
-#include <audio/node/sink_node.hpp>
-#include <audio/node/src_node.hpp>
-#include <audio/node/converter.hpp>
+#include <aloh-media/audio/engine.hpp>
+#include <aloh-media/audio/device.hpp>
+#include <aloh-media/audio/node.hpp>
 
 int main(int argc, char** argv){
     using namespace alo::audio;

@@ -1,6 +1,5 @@
 #include "pipeline_m.hpp"
-#include "audio/Pipeline/Pipeline.hpp"
-#include "audio/Pipeline/Pipeline.hpp"
+#include "audio/pipeline/pipeline.hpp"
 #include <optional>
 
 #include <spdlog/spdlog.h>
