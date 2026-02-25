@@ -24,13 +24,13 @@ class NodeBase {
         if (upstream != nullptr){
             _upstream = upstream;
             
-        }  else { spdlog::warn("{} | if (upstream != nullptr)", std::source_location::current().function_name()); }
+        }  else { spdlog::debug("{} | if (upstream != nullptr)", std::source_location::current().function_name()); }
 
 
         if (downstream != nullptr){
             _downstream = downstream;
             
-        }  else { spdlog::warn("{} | if (downstream != nullptr)", std::source_location::current().function_name()); }
+        }  else { spdlog::debug("{} | if (downstream != nullptr)", std::source_location::current().function_name()); }
 
     }
 
