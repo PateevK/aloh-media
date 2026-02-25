@@ -1,33 +1,23 @@
 #pragma once
 
 #include <spdlog/spdlog.h>
-#include <print>
 
 #include <audio/device/device.hpp>
 #include <audio/engine/device_m.hpp>
 #include <audio/node/node.hpp>
+#include <audio/node/node_base.hpp>
 
 namespace alo::audio::node{
 
 namespace aa = alo::audio;
 
-class Src{
+class Src : public NodeBase<Src>{
+
     aa::device_handle_t<aa::DeviceType::SRC> _device{};
-    Node* _downstream = nullptr;
 
 public:
     Src(aa::device_handle_t<aa::DeviceType::SRC> device) : _device(device) {}
 
-    void connect(Node* upstream, Node* downstream) {
-        spdlog::debug("Src::connect");
-        (void)upstream;
-        if (downstream != nullptr) _downstream = downstream;
-    }
-
-    void push() {
-        std::println("Src::push");
-    }
-    
     // Pull audio data from device's ring buffer
     // Returns the number of frames actually read
     uint32_t pull(float* data, uint32_t frame_count) {
@@ -67,9 +57,6 @@ public:
         }
     }
 
-    void stop(){
-        
-    }
 };
  
 } // namespace aloh::media::node

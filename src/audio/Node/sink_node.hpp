@@ -8,33 +8,21 @@
 #include <audio/device/device.hpp>
 #include <audio/engine/device_m.hpp>
 #include <audio/node/node.hpp>
+#include <audio/node/node_base.hpp>
 
 
 namespace alo::audio::node{
 
 namespace aa = alo::audio;
 
-class Sink{
+class Sink : public NodeBase<Sink> {
     aa::device_handle_t<aa::DeviceType::SINK> _device{};
-    Node* _upstream = nullptr;
-    // Save log's pants.
-    bool _hot_path_log_b{false};
     // Temp buffer for pulling from upstream before writing to device
     std::vector<float> _pull_buffer;
 
 public:
     Sink(aa::device_handle_t<aa::DeviceType::SINK> device) : _device(device) {}
 
-    void connect(Node* upstream, Node* downstream) {
-        spdlog::debug("Sink::connect (terminal node)");
-        if (upstream != nullptr)  _upstream = upstream;
-        (void)downstream;
-    }
-
-    void push() const {
-        std::println("Sink::push ???");
-    }
-    
     // Pull audio data from connected node into the provided buffer
     uint32_t pull(float* data, uint32_t frame_count) {
         if (_upstream == nullptr) {
@@ -47,7 +35,6 @@ public:
         return _upstream->pull(data, frame_count);
     }
 
-    // Device format info
     uint32_t channels() const { return _device ? _device->channels() : 0; }
     uint32_t sample_rate() const { return _device ? _device->sample_rate() : 0; }
 
@@ -96,9 +83,6 @@ public:
         }
     }
 
-    void stop(){
-        
-    }
 };
 
 } // namespace aloh::media::node

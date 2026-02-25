@@ -20,7 +20,6 @@ int main(int argc, char** argv){
     
     auto [pipeline, id] = pipeline::make();
     
-    
     //pipeline->connect(node::net::Src());
     pipeline->connect(node::Src(src_device));
     pipeline->connect(node::Converter());
