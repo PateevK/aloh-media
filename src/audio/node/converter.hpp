@@ -4,15 +4,13 @@
 #include <spdlog/spdlog.h>
 
 #include "node.hpp"
+#include "node_base.hpp"
 #include <audio/Utils/AudioTypes.hpp>
 #include <audio/Utils/AudioTypesImpl.hpp>
 
 namespace alo::audio::node{
 
-class Converter{
-    Node* _upstream = nullptr;
-    Node* _downstream = nullptr;
-    bool _hot_path_log_b{false};
+class Converter : public NodeBase<Converter> {
     ch_converter_ptr _ch_converter;
     resampler_ptr _resampler;
     uint32_t _ch_in{0};
@@ -41,21 +39,12 @@ class Converter{
 public:
 
     Converter() = default;
+
     Converter(const Node& src, const Node& sink) : 
     _ch_in(src.channels()), _ch_out(sink.channels()), _sr_in(src.sample_rate()), _sr_out(sink.sample_rate()){};
 
     Converter(uint32_t ch_in,  uint32_t sr_in, uint32_t ch_out,   uint32_t sr_out)
         : _ch_in(ch_in), _ch_out(ch_out), _sr_in(sr_in), _sr_out(sr_out){};
-
-    void connect(Node* upstream, Node* downstream) {
-        spdlog::debug("Converter::connect");
-        if (upstream != nullptr)  _upstream = upstream;
-        if (downstream != nullptr) _downstream = downstream;
-    }
-
-    void start() {
-
-    }
 
     void build(){
 
@@ -134,14 +123,6 @@ public:
 
         return _upstream->pull(data, frame_count);
     }
-
-    void stop(){
-        
-    }
-
-        // So it satisfies node concept. SHIT
-    uint32_t channels() const { return 0; }
-    uint32_t sample_rate() const { return  0; }
 
 };
 
