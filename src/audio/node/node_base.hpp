@@ -6,17 +6,18 @@
 
 namespace alo::audio::node{
 
+
 template < typename T >
 class NodeBase {
 
     protected:
     NodeBase() = default;
 
-    public :
-
     Node* _upstream = nullptr;
     Node* _downstream = nullptr;
     bool _hot_path_log_b {false};
+
+    public :
 
     void connect(Node* upstream, Node* downstream) {
         spdlog::debug("{}", std::source_location::current().function_name());
@@ -54,6 +55,10 @@ class NodeBase {
 
     }
 
+    void stop(){
+        
+    }
+
     uint32_t pull(float* data, uint32_t frame_count){
         spdlog::debug("{}", std::source_location::current().function_name());
 
@@ -66,10 +71,6 @@ class NodeBase {
         }
 
         return _upstream->pull(data, frame_count);
-    }
-
-    void stop(){
-        
     }
 
     uint32_t channels() const { 

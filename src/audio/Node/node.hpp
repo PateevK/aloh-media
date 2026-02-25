@@ -8,7 +8,7 @@ namespace alo::audio{
 
 class Node;
 template<typename T>
-concept NodeConcept = requires (T node, Node* upstream, Node* downstream, float* data, uint32_t frame_count) {
+concept NodeImplConcept = requires (T node, Node* upstream, Node* downstream, float* data, uint32_t frame_count) {
     { node.connect(upstream, downstream) } -> std::same_as<void>;
     { node.build() } -> std::same_as<void>;
     { node.start() } -> std::same_as<void>;
@@ -33,7 +33,7 @@ class Node{
 
     template<typename NodeT>
     class NodeModel : public NodeI {
-        static_assert(NodeConcept<NodeT>, "NodeT does not satisfy NodeConcept");
+        static_assert(NodeImplConcept<NodeT>, "NodeT does not satisfy NodeConcept");
     public:
         NodeModel(NodeT node)
         : _node(std::move(node)) {}
@@ -69,11 +69,11 @@ class Node{
 
 public:
 
-    template<NodeConcept NodeT>
+    template<NodeImplConcept NodeT>
     Node(NodeT node) 
     : pimpl(std::make_unique<NodeModel<NodeT>>(std::move(node))){
 
-        static_assert(NodeConcept<NodeT>, "NodeT does not satisfy NodeConcept");
+        static_assert(NodeImplConcept<NodeT>, "NodeT does not satisfy NodeConcept");
     }
 
     void connect(Node* upstream, Node* downstream) {

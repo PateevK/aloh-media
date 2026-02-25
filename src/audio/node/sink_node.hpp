@@ -2,7 +2,6 @@
 
 #include "spdlog/spdlog.h"
 #include <cstdint>
-#include <print>
 #include <vector>
 
 #include <audio/device/device.hpp>
