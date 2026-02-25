@@ -28,8 +28,8 @@ Device<type>::Device(device_info_ptr info,  device_id_t id, context_ref context)
     
     for(int i{0}; i < num_formats; i++){
         const auto& formats = _info->get()->nativeDataFormats[i];
-        spdlog::debug("{} | {} | DataFormat = ({}) | buffer for device: format = {}, sample_rate = {}, num_channels = {}", 
-        FUNC_SIG, _info->get()->name , i, std::to_underlying(formats.format), formats.sampleRate, formats.channels);
+        //spdlog::debug("{} | {} | DataFormat = ({}) | buffer for device: format = {}, sample_rate = {}, num_channels = {}", 
+        //FUNC_SIG, _info->get()->name , i, std::to_underlying(formats.format), formats.sampleRate, formats.channels);
     }
 
     if (num_formats >= 1) {

@@ -1,4 +1,6 @@
 
+#include "spdlog/common.h"
+#include "spdlog/spdlog.h"
 #include <stdio.h>
 #include <aloh-media/audio/engine.hpp>
 #include <aloh-media/audio/device.hpp>
@@ -6,6 +8,8 @@
 
 int main(int argc, char** argv){
     using namespace alo::audio;
+
+    spdlog::set_level(spdlog::level::debug);
 
     Engine engine;
     engine.init();
@@ -19,6 +23,7 @@ int main(int argc, char** argv){
 
     
     auto [pipeline, id] = pipeline::make();
+    
     
     //pipeline->connect(node::net::Src());
     pipeline->connect(node::Src(src_device));
