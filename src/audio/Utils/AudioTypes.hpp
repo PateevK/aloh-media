@@ -5,6 +5,7 @@
 
 struct ma_device_wrapper;
 struct ma_pcm_rb_wrapper;
+struct ma_rb_wrapper;
 struct ma_context_wrapper;
 struct ma_device_info_wrapper;
 struct ma_channel_converter_wrapper;
@@ -16,6 +17,10 @@ struct DeviceDeleter {
 
 struct MaPcmRbDeleter {
     void operator()(ma_pcm_rb_wrapper* rb) const noexcept; 
+};
+
+struct MaRbDeleter {
+    void operator()(ma_rb_wrapper* rb) const noexcept; 
 };
 
 struct ContextDeleter {
@@ -52,10 +57,17 @@ namespace device::info {
 using pcm_rb_ptr = std::unique_ptr<ma_pcm_rb_wrapper, MaPcmRbDeleter>;
 using pcm_rb_t = pcm_rb_ptr;
 
-
 namespace pcm_rb{
     auto make(uint32_t channels, uint32_t size_in_frames) noexcept -> pcm_rb_ptr;
 }
+
+using rb_ptr = std::unique_ptr<ma_rb_wrapper, MaRbDeleter>;
+using rb_t = rb_ptr;
+
+namespace rb{
+    auto make(uint32_t size_in_bytes) noexcept -> rb_ptr;
+}
+
 using context_ptr = std::unique_ptr<ma_context_wrapper, ContextDeleter>;
 using context_t = context_ptr;
 using context_ref = const context_t&;

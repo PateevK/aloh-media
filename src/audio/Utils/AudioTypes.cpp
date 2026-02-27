@@ -21,6 +21,13 @@ void MaPcmRbDeleter::operator()(ma_pcm_rb_wrapper* rb) const noexcept {
     }
 };
 
+void MaRbDeleter::operator()(ma_rb_wrapper* rb) const noexcept {
+    if (rb != nullptr) {
+        ma_rb_uninit(rb->get());
+        delete rb;
+    }
+};
+
 void ContextDeleter::operator()(ma_context_wrapper* con) const noexcept{
      if (con != nullptr) {
         ma_context_uninit(con->get());
@@ -74,6 +81,26 @@ auto pcm_rb::make(uint32_t channels, uint32_t size_in_frames) noexcept -> pcm_rb
 
     return ptr;
 }
+
+auto rb::make(uint32_t size_in_bytes) noexcept -> rb_ptr {
+    rb_ptr ptr{ new (std::nothrow) ma_rb_wrapper{} };
+
+    if(!ptr){
+        spdlog::critical("pcm_rb::make() : alloc failed");
+        return rb_ptr{};
+    }
+
+    auto res = ma_rb_init(size_in_bytes, NULL, NULL, ptr->get());
+
+    if(res != MA_SUCCESS){
+        spdlog::critical("rb::make() : ma_rb_init failed");
+        delete ptr.release();
+        return rb_ptr{};
+    }
+
+    return ptr;
+}
+
 
 
 auto context::make() noexcept -> context_t {

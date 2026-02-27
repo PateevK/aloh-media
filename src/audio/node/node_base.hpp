@@ -40,7 +40,7 @@ class NodeBase {
 
     }
 
-    void build(){
+    void build(Node* /*self*/){
         spdlog::debug("{}", std::source_location::current().function_name());
 
         if( !_downstream || !_upstream ){
@@ -60,7 +60,6 @@ class NodeBase {
     }
 
     uint32_t pull(float* data, uint32_t frame_count){
-        spdlog::debug("{}", std::source_location::current().function_name());
 
         if (_upstream == nullptr) {
             if (!_hot_path_log_b) {
@@ -71,6 +70,19 @@ class NodeBase {
         }
 
         return _upstream->pull(data, frame_count);
+    }
+
+    void push(float* data, uint32_t frame_count){
+
+        if (_downstream == nullptr) {
+            if (!_hot_path_log_b) {
+                spdlog::error("{} | if(_downstream == nullptr)", FUNC_SIG);
+                _hot_path_log_b = true;
+            }
+            return;
+        }
+
+        _downstream->push(data, frame_count);
     }
 
     uint32_t channels() const { 

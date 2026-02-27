@@ -8,6 +8,115 @@
 
 namespace alo::audio::utils {
 
+    RingBuffer<RingBufferType::BYTE>::RingBuffer() : _rb(nullptr) {
+    }
+
+    RingBuffer<RingBufferType::BYTE>::RingBuffer(RingBuffer&& other) noexcept
+        : _rb(std::move(other._rb)) {
+    }
+
+    RingBuffer<RingBufferType::BYTE>& RingBuffer<RingBufferType::BYTE>::operator=(RingBuffer&& other) noexcept {
+        if (this != &other) {
+            _rb = std::move(other._rb);
+        }
+        return *this;
+    }
+
+    bool RingBuffer<RingBufferType::BYTE>::_init(uint32_t size_in_bytes) {
+        auto res = rb::make(size_in_bytes);
+        if (!res) {
+            return false;
+        }
+
+        _rb = std::move(res);
+
+        return true;
+    }
+
+    uint32_t RingBuffer<RingBufferType::BYTE>::write(const float* data, uint32_t byte_count) {
+        if (!_rb || !data || byte_count == 0) {
+            return 0;
+        }
+
+        void* write_ptr = nullptr;
+        size_t bytes_to_write = (size_t)byte_count;
+
+        ma_result result = ma_rb_acquire_write(_rb->get(), &bytes_to_write, &write_ptr);
+        if (result != MA_SUCCESS || bytes_to_write == 0) {
+            return 0;
+        }
+
+        std::memcpy(write_ptr, data, byte_count);
+
+        result = ma_rb_commit_write(_rb->get(), bytes_to_write);
+        if (result != MA_SUCCESS) {
+            return 0;
+        }
+
+        return bytes_to_write;
+    }
+
+    uint32_t RingBuffer<RingBufferType::BYTE>::read(float* data, uint32_t byte_count) {
+        if (!_rb || !data || byte_count == 0) {
+            return 0;
+        }
+
+        void* read_ptr = nullptr;
+        size_t bytes_to_read = (size_t)byte_count;
+
+        ma_result result = ma_rb_acquire_read(_rb->get(), &bytes_to_read, &read_ptr);
+        if (result != MA_SUCCESS || bytes_to_read == 0) {
+            return 0;
+        }
+
+        std::memcpy(data, read_ptr, bytes_to_read);
+
+        result = ma_rb_commit_read(_rb->get(), bytes_to_read);
+        if (result != MA_SUCCESS) {
+            return 0;
+        }
+
+        return bytes_to_read;
+    }
+
+    uint32_t RingBuffer<RingBufferType::BYTE>::available_read() const {
+        if (!_rb) {
+            return 0;
+        }
+        return ma_rb_available_read(_rb->get());
+    }
+
+    uint32_t RingBuffer<RingBufferType::BYTE>::available_write() const {
+        if (!_rb) {
+            return 0;
+        }
+        return ma_rb_available_write(_rb->get());
+    }
+
+    RingBuffer<RingBufferType::BYTE>::~RingBuffer() {
+    }
+
+    std::optional<RingBuffer<RingBufferType::BYTE>> RingBuffer<RingBufferType::BYTE>::make(uint32_t sz_in_bytes) {
+        if (sz_in_bytes == 0) {
+            return std::nullopt;
+        }
+
+        constexpr uint32_t channels = 1;
+        uint32_t size_in_frames = sz_in_bytes / sizeof(float);
+        if (size_in_frames == 0) {
+            return std::nullopt;
+        }
+
+        RingBuffer<RingBufferType::BYTE> buffer;
+        auto res = buffer._init(sz_in_bytes);
+
+        if (!res) {
+            return std::nullopt;
+        }
+
+        return buffer;
+    }
+
 
     RingBuffer<RingBufferType::PCM>::RingBuffer() : _pcm_rb(nullptr), _channels(0) {
     }

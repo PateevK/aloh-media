@@ -41,17 +41,6 @@ Device<type>::Device(device_info_ptr info,  device_id_t id, context_ref context)
             FUNC_SIG, _num_channels, _sample_rate);
     }
 
-    const uint32_t size_in_frames = _sample_rate / 2;  // 500ms buffer
-    spdlog::info("{} | {} | DataFormatCount ({}) | buffer for device: size_in_frames = {}, sample_rate = {}, num_channels = {}", 
-        FUNC_SIG, _info->get()->name , num_formats, size_in_frames, _sample_rate, _num_channels);
-
-    auto res = utils::RingBuffer<utils::RingBufferType::PCM>::make(_num_channels, size_in_frames);
-    if(!res.has_value()){
-        spdlog::error("{} | Failed to create ring buffer", FUNC_SIG);
-        throw std::runtime_error(std::format("{} | Failed to create ring buffer", FUNC_SIG));
-    }
-
-    _rb = std::move(res.value());
 }
 
 template<DeviceType type>
@@ -64,65 +53,55 @@ Device<type>::~Device(){
 }
 
 template<DeviceType type>
-void Device<type>::cb(device_cb_t cb) {
-    _data_cb = cb;  
-}
-
-template<DeviceType type>
 void Device<type>::_data_callback_c(ma_device* pDevice, void* pOutput, const void* pInput, uint32_t frameCount){
     Device<type>* self = static_cast<Device<type>*>(pDevice->pUserData);
     if (!self) return;
 
     if constexpr (type == DeviceType::SRC) {
-        // Capture device: write incoming audio to ring buffer
-        if (pInput && frameCount > 0) {
-            const float* input_data = static_cast<const float*>(pInput);
-            self->_rb.write(input_data, frameCount);
+        
+        if (!pInput){
+            return;
         }
-        // External callback after capture (for monitoring/additional processing)
-        if (self->_data_cb) {
-            self->_data_cb(self, pOutput, pInput, frameCount);
+
+        if(frameCount < 0){
+            return;
         }
+
+        for(auto node : self->_subscriber_nodes){
+            node->push((float*)pInput, frameCount);
+        }
+       
+
     } else {
-        // Playback device: external callback FIRST to fill buffer
-        if (self->_data_cb) {
-            self->_data_cb(self, pOutput, pInput, frameCount);
+        
+        if (!pOutput){
+            return;
         }
-        // Then read from ring buffer to output
-        if (pOutput && frameCount > 0) {
-            float* output_data = static_cast<float*>(pOutput);
-            uint32_t frames_read = self->_rb.read(output_data, frameCount);
-            
-            // Zero-fill if we didn't get enough data (avoid noise)
-            if (frames_read < frameCount) {
-                uint32_t remaining_samples = (frameCount - frames_read) * self->_num_channels;
-                std::memset(output_data + (frames_read * self->_num_channels), 0, 
-                           remaining_samples * sizeof(float));
+
+        if(frameCount < 0){
+            return;
+        }
+
+
+        float* out = static_cast<float*>(pOutput);
+        uint32_t total_samples = frameCount * self->channels();
+
+        // mix
+        for(auto node : self->_subscriber_nodes){
+            node->pull(self->_mixer_preallocated_buff.data(), frameCount);
+
+            for (uint32_t i = 0; i < total_samples; ++i) {
+                out[i] += self->_mixer_preallocated_buff[i];
             }
         }
+
+        // clamp
+        for (uint32_t i = 0; i < total_samples; ++i) {
+            float x = out[i];
+            out[i] = x / (1.0f + std::abs(x)); 
+        }
     }
-}
 
-template<DeviceType type>
-uint32_t Device<type>::pull(float* data, uint32_t frame_count) {
-    if (!data || frame_count == 0) return 0;
-    return _rb.read(data, frame_count);
-}
-
-template<DeviceType type>
-uint32_t Device<type>::write(const float* data, uint32_t frame_count) {
-    if (!data || frame_count == 0) return 0;
-    return _rb.write(data, frame_count);
-}
-
-template<DeviceType type>
-uint32_t Device<type>::available() const {
-    return _rb.available_read();
-}
-
-template<DeviceType type>
-device_id_t Device<type>::id() const {
-    return _id;
 }
 
 template<DeviceType type>
@@ -179,6 +158,17 @@ std::optional<err_t> Device<type>::init(){
     if(result != MA_SUCCESS){
         spdlog::error("{} | result != MA_SUCCESS", FUNC_SIG);
         return result;
+    }
+    
+    uint32_t negotiated_frames = 0;
+    if constexpr (type == DeviceType::SRC) {
+        negotiated_frames = _device->get()->capture.internalPeriodSizeInFrames;
+        spdlog::info("{} | Capture device initialized with {} frames", FUNC_SIG, negotiated_frames);
+    } else {
+        negotiated_frames = _device->get()->playback.internalPeriodSizeInFrames;
+        _mixer_preallocated_buff.resize(negotiated_frames * _num_channels, 0.0f);
+        spdlog::info("{} | Playback device initialized. Scratchpad resized to hold {} floats", 
+                     FUNC_SIG, _mixer_preallocated_buff.size());
     }
 
     _is_init = true;

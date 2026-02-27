@@ -46,7 +46,7 @@ public:
     Converter(uint32_t ch_in,  uint32_t sr_in, uint32_t ch_out,   uint32_t sr_out)
         : _ch_in(ch_in), _ch_out(ch_out), _sr_in(sr_in), _sr_out(sr_out){};
 
-    void build(){
+    void build(Node* /*self*/){
 
         if( !_downstream || !_upstream ){
             spdlog::error(" {} | if( !_downstream || !_upstream ) ", FUNC_SIG);
@@ -63,12 +63,12 @@ public:
         auto down_ch =  _downstream->channels();
         auto down_smpl = _downstream->sample_rate();
 
-        if (up_ch == 0 && down_ch == 0) {
+        if (up_ch == 0 || down_ch == 0) {
             spdlog::error(" {} | if (_sr_in == 0 && _sr_out == 0)", FUNC_SIG);
             return;
         }
           
-        if (up_smpl == 0 && down_smpl == 0) {
+        if (up_smpl == 0 || down_smpl == 0) {
             spdlog::error(" {} | if (_ch_in == 0 && _ch_out == 0) ", FUNC_SIG);
             return;
         }

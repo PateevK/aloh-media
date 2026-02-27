@@ -18,6 +18,11 @@ struct ma_pcm_rb_wrapper{
     ma_pcm_rb* get() { return &pcm_rb; }
 };
 
+struct ma_rb_wrapper{
+    ma_rb rb;
+    ma_rb* get() { return &rb; }
+};
+
 struct ma_context_wrapper{
     ma_context context;
     ma_context* get() { return &context; }
