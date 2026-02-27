@@ -24,7 +24,7 @@ public:
         if (!_device || !data || frame_count == 0) {
             return 0;
         }
-        return _device->pull(data, frame_count);
+        return _device->read(data, frame_count);
     }
 
     uint32_t available() const {

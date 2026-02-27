@@ -48,7 +48,7 @@ public:
     // Ring buffer access - SRC devices write internally, SINK devices read internally
     // For SRC: pull() reads captured audio from buffer
     // For SINK: write() queues audio for playback
-    uint32_t pull(float* data, uint32_t frame_count);
+    uint32_t read(float* data, uint32_t frame_count);
     uint32_t write(const float* data, uint32_t frame_count);
     uint32_t available() const;
 
