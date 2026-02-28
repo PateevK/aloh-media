@@ -100,17 +100,22 @@ public:
             return;
         }
 
-        auto res = alo::audio::utils::RingBuffer<alo::audio::utils::RingBufferType::PCM>::make(_downstream->channels(), _downstream->sample_rate());
+        _channels = _downstream->channels();
+        _sampla_rate = _downstream->sample_rate();
+
+        auto res = alo::audio::utils::RingBuffer<alo::audio::utils::RingBufferType::PCM>::make(_channels, _sampla_rate);
 
         if(!res){
             spdlog::error("{} | if(!res)", FUNC_SIG);
             return;
         }
 
-        _channels = _downstream->channels();
-        _sampla_rate = _downstream->sample_rate();
-
         _buffer = std::move(res.value());
+
+        spdlog::info(
+            "{} | _channels({}), _sampla_rate({})", 
+            FUNC_SIG, _channels, _sampla_rate
+        );
     }
 
 

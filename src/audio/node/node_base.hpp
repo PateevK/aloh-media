@@ -43,7 +43,7 @@ class NodeBase {
     void build(Node* /*self*/){
         spdlog::debug("{}", std::source_location::current().function_name());
 
-        if( !_downstream || !_upstream ){
+        if( !_downstream && !_upstream ){
             spdlog::error(" {} | if( !_downstream || !_upstream ) ", FUNC_SIG);
             return;
         }
@@ -53,6 +53,7 @@ class NodeBase {
             return;
         }
 
+        spdlog::info("{} | channels({}), sample-rate({})", FUNC_SIG, static_cast<T*>(this)->channels(), static_cast<T*>(this)->sample_rate());
     }
 
     void stop(){

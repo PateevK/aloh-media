@@ -159,7 +159,7 @@ void resample(resampler_ptr const& resampler, const void* frames_in, uint64_t* f
     ma_linear_resampler_process_pcm_frames(resampler->get(), frames_in, frame_count_in, frames_out, frame_count_out);
 }
 
-void convertchannels(ch_converter_ptr const& converter, void* frames_out, const void* frames_in, uint64_t frame_count) {
+void convertChannels(ch_converter_ptr const& converter, void* frames_out, const void* frames_in, uint64_t frame_count) {
     if (!converter || !frames_out || !frames_in) {
         return;
     }

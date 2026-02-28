@@ -88,4 +88,4 @@ namespace resampler{
 }
 
 void resample(resampler_ptr const& resampler, const void* frames_in, uint64_t* frame_count_in, void* frames_out, uint64_t* frame_count_out);
-void convertchannels(ch_converter_ptr const& converter, void* frames_out, const void* frames_in, uint64_t frame_count);
+void convertChannels(ch_converter_ptr const& converter, void* frames_out, const void* frames_in, uint64_t frame_count);

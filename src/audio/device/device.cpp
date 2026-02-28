@@ -3,6 +3,7 @@
 #include "audio/Utils/AudioTypes.hpp"
 #include "audio/Utils/AudioTypesImpl.hpp"
 
+#include <cstddef>
 #include <cstring>
 #include <memory>
 #include <optional>
@@ -163,12 +164,17 @@ std::optional<err_t> Device<type>::init(){
     uint32_t negotiated_frames = 0;
     if constexpr (type == DeviceType::SRC) {
         negotiated_frames = _device->get()->capture.internalPeriodSizeInFrames;
-        spdlog::info("{} | Capture device initialized with {} frames", FUNC_SIG, negotiated_frames);
+        size_t num_bytes = negotiated_frames * _num_channels;
+        double tickDurationMs = (static_cast<double>(negotiated_frames) / _sample_rate) * 1000.0;
+        spdlog::info("{} | {} | Capture device initialized, sample-rate({}), frames({}), floats({}), channels({}), tick-ms({})", FUNC_SIG, _device->get()->capture.name, _sample_rate, negotiated_frames, num_bytes, _num_channels, tickDurationMs);
     } else {
         negotiated_frames = _device->get()->playback.internalPeriodSizeInFrames;
         _mixer_preallocated_buff.resize(negotiated_frames * _num_channels, 0.0f);
-        spdlog::info("{} | Playback device initialized. Scratchpad resized to hold {} floats", 
-                     FUNC_SIG, _mixer_preallocated_buff.size());
+        double tickDurationMs = (static_cast<double>(negotiated_frames) / _sample_rate) * 1000.0;
+        spdlog::info(
+            "{} | {}| Playback device initialized. Mixer buffer resized to hold floats({}), sample-rate({}),  frames({}), channels({}), tick ms({})", 
+            FUNC_SIG,  _device->get()->playback.name, _mixer_preallocated_buff.size(), _sample_rate, negotiated_frames, _num_channels, tickDurationMs
+        );
     }
 
     _is_init = true;
